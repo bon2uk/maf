@@ -3,33 +3,32 @@ version: "3.9"
 services:
   postgres:
     image: postgres:16-alpine
+    container_name: postgres
     environment:
       POSTGRES_USER: maf
       POSTGRES_PASSWORD: maf
-      POSTGRES_DB: maf
     ports:
       - "5432:5432"
     volumes:
-      - ./postgres-init:/docker-entrypoint-initdb.d
+      - pgdata:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U maf -d maf"]
+      test: ["CMD-SHELL", "pg_isready -U maf"]
       interval: 5s
       timeout: 5s
       retries: 5
-
   auth-service:
     build: ./services/auth-service
     ports:
       - "8081:8081"
     environment:
       SERVER_PORT: 8081
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/maf
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/authdb
       SPRING_DATASOURCE_USERNAME: maf
       SPRING_DATASOURCE_PASSWORD: maf
       SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: auth
     depends_on:
-      postgres:
-        condition: service_healthy
+      - postgres
 
   user-service:
     build: ./services/user-service
@@ -37,13 +36,13 @@ services:
       - "8082:8082"
     environment:
       SERVER_PORT: 8082
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/maf
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/userdb
       SPRING_DATASOURCE_USERNAME: maf
       SPRING_DATASOURCE_PASSWORD: maf
       SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: "user"
     depends_on:
-      postgres:
-        condition: service_healthy
+      - postgres
+
 
   product-service:
     build: ./services/product-service
@@ -51,13 +50,12 @@ services:
       - "8083:8083"
     environment:
       SERVER_PORT: 8083
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/maf
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/productdb
       SPRING_DATASOURCE_USERNAME: maf
       SPRING_DATASOURCE_PASSWORD: maf
       SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: product
     depends_on:
-      postgres:
-        condition: service_healthy
+      - postgres
 
   order-service:
     build: ./services/order-service
@@ -65,13 +63,12 @@ services:
       - "8084:8084"
     environment:
       SERVER_PORT: 8084
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/maf
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/orderdb
       SPRING_DATASOURCE_USERNAME: maf
       SPRING_DATASOURCE_PASSWORD: maf
       SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: "order"
     depends_on:
-      postgres:
-        condition: service_healthy
+      - postgres
 
   cart-service:
     build: ./services/cart-service
@@ -79,13 +76,12 @@ services:
       - "8085:8085"
     environment:
       SERVER_PORT: 8085
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/maf
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/cartdb
       SPRING_DATASOURCE_USERNAME: maf
       SPRING_DATASOURCE_PASSWORD: maf
       SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: cart
     depends_on:
-      postgres:
-        condition: service_healthy
+      - postgres
 
   messaging-service:
     build: ./services/messaging-service
@@ -93,13 +89,12 @@ services:
       - "8086:8086"
     environment:
       SERVER_PORT: 8086
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/maf
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/messagingdb
       SPRING_DATASOURCE_USERNAME: maf
       SPRING_DATASOURCE_PASSWORD: maf
       SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: messaging
     depends_on:
-      postgres:
-        condition: service_healthy
+      - postgres
 
   notification-service:
     build: ./services/notification-service
@@ -107,13 +102,12 @@ services:
       - "8087:8087"
     environment:
       SERVER_PORT: 8087
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/maf
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/notificationdb
       SPRING_DATASOURCE_USERNAME: maf
       SPRING_DATASOURCE_PASSWORD: maf
       SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: notification
     depends_on:
-      postgres:
-        condition: service_healthy
+      - postgres
 
   payment-service:
     build: ./services/payment-service
@@ -121,11 +115,12 @@ services:
       - "8088:8088"
     environment:
       SERVER_PORT: 8088
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/maf
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/paymentdb
       SPRING_DATASOURCE_USERNAME: maf
       SPRING_DATASOURCE_PASSWORD: maf
       SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: payment
     depends_on:
-      postgres:
-        condition: service_healthy
+      - postgres
 
+volumes:
+  pgdata:

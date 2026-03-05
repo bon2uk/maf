@@ -1,0 +1,12 @@
+server:
+  port: 8081  # змінити під кожен сервіс
+
+spring:
+  datasource:
+    url: jdbc:postgresql://postgres:5432/orderdb  # змінити під кожен сервіс
+    username: postgres
+    password: password
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true

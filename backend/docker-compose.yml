@@ -27,6 +27,7 @@ services:
       SPRING_DATASOURCE_USERNAME: maf
       SPRING_DATASOURCE_PASSWORD: maf
       SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: auth
+      SPRING_PROFILES_ACTIVE: dev
     depends_on:
       - postgres
 

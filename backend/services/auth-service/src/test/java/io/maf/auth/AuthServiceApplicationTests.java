@@ -1,4 +1,4 @@
-package io.maf.auth;
+package com.maf.auth;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -5,33 +5,33 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a915ee33-ff1c-4be3-87d5-6a3dbb71d7fa" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/libs/common/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/auth-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/auth-service/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/cart-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/cart-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/cart-service/src/main/java/io/maf/cart/CartServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/cart-service/src/main/java/io/maf/cart/CartServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/cart-service/src/test/java/io/maf/cart/CartServiceApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/cart-service/src/test/java/io/maf/cart/CartServiceApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/cart-service/src/test/java/io/maf/cart/CartServiceApplicationTests.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/services/messaging-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/messaging-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/messaging-service/src/main/java/io/maf/messaging/MessagingServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/messaging-service/src/main/java/io/maf/messaging/MessagingServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/messaging-service/src/test/java/io/maf/messaging/MessagingServiceApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/messaging-service/src/test/java/io/maf/messaging/MessagingServiceApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/messaging-service/src/test/java/io/maf/messaging/MessagingServiceApplicationTests.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/services/notification-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/notification-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/notification-service/src/main/java/io/maf/notification/NotificationServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/notification-service/src/main/java/io/maf/notification/NotificationServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/notification-service/src/test/java/io/maf/notification/NotificationServiceApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/notification-service/src/test/java/io/maf/notification/NotificationServiceApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/notification-service/src/test/java/io/maf/notification/NotificationServiceApplicationTests.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/services/order-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/order-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/order-service/src/main/java/io/maf/order/OrderServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/order-service/src/main/java/io/maf/order/OrderServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/order-service/src/test/java/io/maf/order/OrderServiceApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/order-service/src/test/java/io/maf/order/OrderServiceApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/order-service/src/test/java/io/maf/order/OrderServiceApplicationTests.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/services/payment-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/payment-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/payment-service/src/main/java/io/maf/payment/PaymentServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/payment-service/src/main/java/io/maf/payment/PaymentServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/payment-service/src/test/java/io/maf/payment/PaymentServiceApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/payment-service/src/test/java/io/maf/payment/PaymentServiceApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/payment-service/src/test/java/io/maf/payment/PaymentServiceApplicationTests.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/services/product-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/product-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/product-service/src/main/java/io/maf/product/ProductServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/product-service/src/main/java/io/maf/product/ProductServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/product-service/src/test/java/io/maf/product/ProductServiceApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/product-service/src/test/java/io/maf/product/ProductServiceApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/product-service/src/test/java/io/maf/product/ProductServiceApplicationTests.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/services/user-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/user-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/user-service/src/main/java/io/maf/user/UserServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/user-service/src/main/java/io/maf/user/UserServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/user-service/src/test/java/io/maf/user/UserServiceApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/user-service/src/test/java/io/maf/user/UserServiceApplicationTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/Application.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/Application.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/user-service/src/test/java/io/maf/user/UserServiceApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/demo-0.0.1-SNAPSHOT.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/demo-0.0.1-SNAPSHOT.jar.original" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.example.demo.DemoApplicationTests.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.example.demo.DemoApplicationTests.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,20 +62,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Maven.auth-service [clean].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "/Users/alexbondaruk/Documents/maf/backend/pom.xml",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Maven.auth-service [clean].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/alexbondaruk/Documents/maf/backend/pom.xml&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/main/java/com" />

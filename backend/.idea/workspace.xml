@@ -5,33 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a915ee33-ff1c-4be3-87d5-6a3dbb71d7fa" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/libs/common/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/auth-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/auth-service/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/cart-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/cart-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/cart-service/src/test/java/io/maf/cart/CartServiceApplicationTests.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/services/messaging-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/messaging-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/messaging-service/src/test/java/io/maf/messaging/MessagingServiceApplicationTests.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/services/notification-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/notification-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/notification-service/src/test/java/io/maf/notification/NotificationServiceApplicationTests.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/services/order-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/order-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/order-service/src/test/java/io/maf/order/OrderServiceApplicationTests.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/services/payment-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/payment-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/payment-service/src/test/java/io/maf/payment/PaymentServiceApplicationTests.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/services/product-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/product-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/product-service/src/test/java/io/maf/product/ProductServiceApplicationTests.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/services/user-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/user-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/user-service/src/test/java/io/maf/user/UserServiceApplicationTests.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/demo-0.0.1-SNAPSHOT.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/demo-0.0.1-SNAPSHOT.jar.original" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.example.demo.DemoApplicationTests.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.example.demo.DemoApplicationTests.txt" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -17,11 +17,12 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<UserResponse> register(@RequestBody RegisterRequest request) {
+ try {
         User user = authService.register(request.getEmail(), request.getPassword());
-
-        // повертаємо DTO, а не entity
-        UserResponse response = new UserResponse(user.getId().toString(), user.getEmail());
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(new UserResponse(user.getId().toString(), user.getEmail()));
+    } catch (Exception e) {
+        e.printStackTrace(); 
+        return ResponseEntity.status(500).body(null);
+    }
     }
 }

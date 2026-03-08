@@ -1,4 +1,4 @@
-package io.maf.payment;
+package com.maf.payment;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

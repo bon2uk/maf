@@ -1,4 +1,4 @@
-package io.maf.messaging;
+package com.maf.messaging;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

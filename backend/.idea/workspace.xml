@@ -5,13 +5,33 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a915ee33-ff1c-4be3-87d5-6a3dbb71d7fa" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/auth-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/auth-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/auth-service/src/main/java/com/maf/auth/dto/RegisterRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/auth-service/src/main/java/com/maf/auth/dto/RegisterRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/demo/DemoApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/Application.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/example/demo/DemoApplicationTests.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/demo/DemoApplication.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/com/example/demo/DemoApplicationTests.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/cart-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/cart-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/cart-service/src/main/java/io/maf/cart/CartServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/cart-service/src/main/java/io/maf/cart/CartServiceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/cart-service/src/test/java/io/maf/cart/CartServiceApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/cart-service/src/test/java/io/maf/cart/CartServiceApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/messaging-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/messaging-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/messaging-service/src/main/java/io/maf/messaging/MessagingServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/messaging-service/src/main/java/io/maf/messaging/MessagingServiceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/messaging-service/src/test/java/io/maf/messaging/MessagingServiceApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/messaging-service/src/test/java/io/maf/messaging/MessagingServiceApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/notification-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/notification-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/notification-service/src/main/java/io/maf/notification/NotificationServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/notification-service/src/main/java/io/maf/notification/NotificationServiceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/notification-service/src/test/java/io/maf/notification/NotificationServiceApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/notification-service/src/test/java/io/maf/notification/NotificationServiceApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/order-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/order-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/order-service/src/main/java/io/maf/order/OrderServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/order-service/src/main/java/io/maf/order/OrderServiceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/order-service/src/test/java/io/maf/order/OrderServiceApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/order-service/src/test/java/io/maf/order/OrderServiceApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/payment-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/payment-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/payment-service/src/main/java/io/maf/payment/PaymentServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/payment-service/src/main/java/io/maf/payment/PaymentServiceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/payment-service/src/test/java/io/maf/payment/PaymentServiceApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/payment-service/src/test/java/io/maf/payment/PaymentServiceApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/product-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/product-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/product-service/src/main/java/io/maf/product/ProductServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/product-service/src/main/java/io/maf/product/ProductServiceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/product-service/src/test/java/io/maf/product/ProductServiceApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/product-service/src/test/java/io/maf/product/ProductServiceApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/user-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/user-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/user-service/src/main/java/io/maf/user/UserServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/user-service/src/main/java/io/maf/user/UserServiceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/user-service/src/test/java/io/maf/user/UserServiceApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/user-service/src/test/java/io/maf/user/UserServiceApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/Application.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/Application.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

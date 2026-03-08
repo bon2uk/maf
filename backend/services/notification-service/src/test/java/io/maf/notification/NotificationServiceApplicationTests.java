@@ -1,4 +1,4 @@
-package io.maf.notification;
+package com.maf.notification;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

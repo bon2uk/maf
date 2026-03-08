@@ -1,4 +1,4 @@
-package io.maf.order;
+package com.maf.order;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -1,4 +1,4 @@
-package io.maf.messaging;
+package com.maf.messaging;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

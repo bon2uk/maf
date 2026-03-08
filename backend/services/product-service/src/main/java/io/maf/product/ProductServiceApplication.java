@@ -1,4 +1,4 @@
-package io.maf.product;
+package com.maf.product;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

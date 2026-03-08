@@ -1,4 +1,4 @@
-package io.maf.user;
+package com.maf.user;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

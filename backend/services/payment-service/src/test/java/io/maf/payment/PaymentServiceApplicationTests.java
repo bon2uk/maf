@@ -1,4 +1,4 @@
-package io.maf.payment;
+package com.maf.payment;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

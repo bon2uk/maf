@@ -1,4 +1,4 @@
-package io.maf.product;
+package com.maf.product;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

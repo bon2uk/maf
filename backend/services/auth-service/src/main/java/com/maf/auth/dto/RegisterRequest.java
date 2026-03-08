@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class RegisterRequest {
+    @Email
     private String email;
     private String password;
 }

@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://postgres:5432/paymentdb  # змінити під кожен сервіс
-    username: postgres
-    password: password
+    url: ${PAYMENT_DB_URL}
+    username: ${PAYMENT_DB_USERNAME}
+    password: ${PAYMENT_DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update

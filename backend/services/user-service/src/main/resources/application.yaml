@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://postgres:5432/userdb  # змінити під кожен сервіс
-    username: postgres
-    password: password
+    url: ${USER_DB_URL}
+    username: ${USER_DB_USERNAME}
+    password: ${USER_DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update

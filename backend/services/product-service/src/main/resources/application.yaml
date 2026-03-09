@@ -1,11 +1,11 @@
 server:
-  port: 8081  # змінити під кожен сервіс
+  port: 8081
 
 spring:
   datasource:
-    url: jdbc:postgresql://postgres:5432/productdb  # змінити під кожен сервіс
-    username: postgres
-    password: password
+    url: ${PRODUCT_DB_URL}
+    username: ${PRODUCT_DB_USERNAME}
+    password: ${PRODUCT_DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update

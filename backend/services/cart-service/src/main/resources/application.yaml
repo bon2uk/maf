@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://postgres:5432/cartdb  # змінити під кожен сервіс
-    username: postgres
-    password: password
+    url: ${CART_DB_URL}
+    username: ${CART_DB_USERNAME}
+    password: ${CART_DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update

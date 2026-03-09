@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://postgres:5432/orderdb  # змінити під кожен сервіс
-    username: postgres
-    password: password
+    url: ${ORDER_DB_URL}
+    username: ${ORDER_DB_USERNAME}
+    password: ${ORDER_DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update

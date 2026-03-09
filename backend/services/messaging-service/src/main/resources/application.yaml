@@ -1,11 +1,11 @@
 server:
-  port: 8081  # змінити під кожен сервіс
+  port: 8081
 
 spring:
   datasource:
-    url: jdbc:postgresql://postgres:5432/messagingdb  # змінити під кожен сервіс
-    username: postgres
-    password: password
+    url: ${MESSAGING_DB_URL}
+    username: ${MESSAGING_DB_USERNAME}
+    password: ${MESSAGING_DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update

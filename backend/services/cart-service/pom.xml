@@ -11,6 +11,7 @@
 
 	<groupId>com.maf</groupId>
 	<artifactId>cart-service</artifactId>
+
 	<version>0.0.1-SNAPSHOT</version>
 	<name>cart-service</name>
 	<description>Demo project for Spring Boot</description>

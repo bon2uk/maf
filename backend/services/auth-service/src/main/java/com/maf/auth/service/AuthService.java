@@ -1,5 +1,7 @@
 package com.maf.auth.service;
 
+import com.maf.auth.dto.LoginRequest;
+import com.maf.auth.dto.LoginResponse;
 import com.maf.auth.dto.RegisterRequest;
 import com.maf.auth.entity.User;
 import com.maf.auth.exception.UserAlreadyExistsException;
@@ -17,9 +19,9 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     public User register(RegisterRequest registerRequest) {
-        System.out.println("Registering user: " + userRepository.existsByEmail(registerRequest.getEmail()));
         if (userRepository.existsByEmail(registerRequest.getEmail())) {
             throw new UserAlreadyExistsException("User with email " + registerRequest.getEmail() + " already exists");
         }
@@ -33,5 +35,17 @@ public class AuthService {
                 .build();
 
         return userRepository.save(user);
+    }
+
+    public LoginResponse login(LoginRequest request) {
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
+
+        if(!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
+            throw new RuntimeException("Invalid password");
+        }
+
+        String token = jwtService.generateToken(user);
+
+        return new LoginResponse(token);
     }
 }

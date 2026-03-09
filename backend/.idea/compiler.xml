@@ -6,8 +6,6 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="product-service" />
-        <module name="payment-service" />
       </profile>
       <profile name="Annotation profile for maf-backend" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -19,24 +17,26 @@
         <module name="auth-service" />
         <module name="cart-service" />
         <module name="messaging-service" />
+        <module name="payment-service" />
         <module name="common" />
-        <module name="user-service" />
+        <module name="product-service" />
         <module name="order-service" />
+        <module name="user-service" />
         <module name="notification-service" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="auth-service" options="" />
-      <module name="cart-service" options="" />
-      <module name="common" options="" />
-      <module name="messaging-service" options="" />
-      <module name="notification-service" options="" />
-      <module name="order-service" options="" />
+      <module name="auth-service" options="-parameters" />
+      <module name="cart-service" options="-parameters" />
+      <module name="common" options="-parameters" />
+      <module name="messaging-service" options="-parameters" />
+      <module name="notification-service" options="-parameters" />
+      <module name="order-service" options="-parameters" />
       <module name="payment-service" options="-parameters" />
       <module name="product-service" options="-parameters" />
-      <module name="user-service" options="" />
+      <module name="user-service" options="-parameters" />
     </option>
   </component>
 </project>

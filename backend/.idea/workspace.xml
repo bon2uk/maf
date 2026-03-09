@@ -5,13 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a915ee33-ff1c-4be3-87d5-6a3dbb71d7fa" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/services/auth-service/src/main/java/com/maf/auth/config/JwtAuthenticationFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/auth-service/src/main/java/com/maf/auth/dto/LoginRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/auth-service/src/main/java/com/maf/auth/dto/LoginResponse.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/services/auth-service/src/main/java/com/maf/auth/exception/UserAlreadyExistsException.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/services/auth-service/src/main/java/com/maf/auth/handler/GlobalExceptionHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/services/auth-service/src/main/java/com/maf/auth/service/JwtService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/common/target/common-1.0.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/libs/common/target/common-1.0.0.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/services/auth-service/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/services/auth-service/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/common/target/common-1.0.0.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/common/target/maven-archiver/pom.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/common/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/auth-service/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/auth-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/auth-service/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/auth-service/src/main/java/com/maf/auth/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/auth-service/src/main/java/com/maf/auth/controller/AuthController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/auth-service/src/main/java/com/maf/auth/dto/RegisterRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/auth-service/src/main/java/com/maf/auth/dto/RegisterRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/auth-service/src/main/java/com/maf/auth/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/auth-service/src/main/java/com/maf/auth/entity/User.java" afterDir="false" />
@@ -20,12 +30,25 @@
       <change beforePath="$PROJECT_DIR$/services/auth-service/src/main/java/com/maf/auth/repositories/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/auth-service/src/main/java/com/maf/auth/repository/UserRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/auth-service/src/main/java/com/maf/auth/services/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/services/auth-service/src/main/java/com/maf/auth/service/AuthService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/auth-service/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/services/auth-service/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/cart-service/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/cart-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/cart-service/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/cart-service/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/services/cart-service/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/messaging-service/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/messaging-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/messaging-service/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/messaging-service/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/services/messaging-service/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/notification-service/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/notification-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/notification-service/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/notification-service/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/services/notification-service/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/order-service/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/order-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/order-service/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/order-service/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/services/order-service/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/payment-service/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/payment-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/payment-service/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/payment-service/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/services/payment-service/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/product-service/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/product-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/services/product-service/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/services/product-service/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/services/product-service/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/user-service/Dockerfile" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/services/user-service/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/services/user-service/src/main/resources/application.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/checkstyle-cachefile" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/checkstyle-checker.xml" beforeDir="false" />
@@ -63,6 +86,9 @@
   &quot;associatedIndex&quot;: 1
 }</component>
   <component name="ProjectId" id="3AdhFbalge43fQHbAu4yQHJQJDJ" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />

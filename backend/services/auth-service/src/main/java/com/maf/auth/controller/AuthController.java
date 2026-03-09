@@ -1,5 +1,6 @@
 package com.maf.auth.controller;
 
+import com.maf.auth.dto.LoginRequest;
 import com.maf.auth.entity.User;
 import com.maf.auth.service.AuthService;
 import com.maf.auth.dto.RegisterRequest;
@@ -21,7 +22,6 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
-        System.out.println("Registering user controller: " + request.getEmail());
         try {
             User user = authService.register(request);
             UserResponse response = new UserResponse(user.getId().toString(), user.getEmail());
@@ -34,5 +34,10 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("error", "Server error"));
         }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+        return ResponseEntity.ok(authService.login(request));
     }
 }

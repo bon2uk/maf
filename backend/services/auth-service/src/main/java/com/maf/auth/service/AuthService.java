@@ -3,14 +3,19 @@ package com.maf.auth.service;
 import com.maf.auth.dto.LoginRequest;
 import com.maf.auth.dto.LoginResponse;
 import com.maf.auth.dto.RegisterRequest;
+import com.maf.auth.entity.Role;
 import com.maf.auth.entity.User;
 import com.maf.auth.exception.UserAlreadyExistsException;
+import com.maf.auth.repository.RoleRepository;
 import com.maf.auth.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -20,18 +25,26 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final RefreshTokenService refreshTokenService;
+    private final RoleRepository roleRepository;
 
+    @Transactional
     public User register(RegisterRequest registerRequest) {
         if (userRepository.existsByEmail(registerRequest.getEmail())) {
-            throw new UserAlreadyExistsException("User with email " + registerRequest.getEmail() + " already exists");
+            throw new UserAlreadyExistsException(
+                    "User with email " + registerRequest.getEmail() + " already exists"
+            );
         }
 
+        Role userRole = roleRepository.findByName("USER")
+                .orElseThrow(() -> new IllegalStateException("USER role not found"));
+
         User user = User.builder()
-                .id(UUID.randomUUID())
                 .email(registerRequest.getEmail())
                 .passwordHash(passwordEncoder.encode(registerRequest.getPassword()))
                 .status(User.Status.ACTIVE)
                 .createdAt(Instant.now())
+                .roles(new HashSet<>(Set.of(userRole))) // додаємо роль одразу
                 .build();
 
         return userRepository.save(user);
@@ -45,7 +58,8 @@ public class AuthService {
         }
 
         String token = jwtService.generateToken(user);
+        String refreshToken = refreshTokenService.createRefreshToken(user).getToken();
 
-        return new LoginResponse(token);
+        return new LoginResponse(token, refreshToken);
     }
 }

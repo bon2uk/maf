@@ -4,9 +4,13 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
-import java.util.Set;
+import org.jspecify.annotations.Nullable;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.*;
 import java.time.Instant;
-import java.util.UUID;
 
 @Entity
 @Table(name = "users")
@@ -15,7 +19,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -53,5 +57,32 @@ public class User {
 
     public enum Status {
         ACTIVE, INACTIVE
+    }
+
+    @NonNull
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+
+        for (Role role : roles) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
+
+            for (Permission perm : role.getPermissions()) {
+                authorities.add(new SimpleGrantedAuthority(perm.getName()));
+            }
+        }
+
+        return authorities;
+    }
+
+    @Override
+    public String getPassword() {
+        return getPasswordHash();
+    }
+
+    @Override
+    @NonNull
+    public String getUsername() {
+        return firstName + " " + lastName;
     }
 }

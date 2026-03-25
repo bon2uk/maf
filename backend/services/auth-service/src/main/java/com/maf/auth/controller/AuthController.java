@@ -1,7 +1,6 @@
 package com.maf.auth.controller;
 
 import com.maf.auth.dto.*;
-import com.maf.auth.entity.RefreshToken;
 import com.maf.auth.entity.User;
 import com.maf.auth.service.AuthService;
 import com.maf.auth.service.JwtService;
@@ -11,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;

@@ -1,4 +1,4 @@
-package com.maf.auth.handler;
+package com.maf.user.handler;
 
 import com.maf.auth.exception.UserAlreadyExistsException;
 import org.springframework.dao.DataIntegrityViolationException;

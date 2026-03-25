@@ -1,11 +1,13 @@
 package com.maf.user.repository;
 
-import com.maf.auth.entity.Permission;
+import com.maf.user.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 import java.util.UUID;
 
-public interface PermissionRepository extends JpaRepository<Permission, UUID> {
-    Optional<Permission> findByName(String name);
+
+public interface UserRepository extends JpaRepository<User, UUID> {
+    Optional<User> findByEmail(String email);
+    boolean existsByEmail(String email);
 }

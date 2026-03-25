@@ -1,4 +1,4 @@
-package com.maf.auth.exception;
+package com.maf.user.exception;
 
 public class UserAlreadyExistsException  extends RuntimeException {
     public UserAlreadyExistsException(String message) {

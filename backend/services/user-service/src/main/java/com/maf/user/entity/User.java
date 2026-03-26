@@ -9,7 +9,10 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "users")
-@Getter @Builder @NoArgsConstructor @AllArgsConstructor
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     @Id
@@ -36,21 +39,6 @@ public class User {
     @Column(name = "updated_at", nullable = false)
     private Instant updatedAt;
 
-    @PrePersist
-    protected void prePersist() {
-        Instant now = Instant.now();
-        createdAt = now;
-        updatedAt = now;
-        if (this.status == null) {
-            this.status = UserStatus.ACTIVE;
-        }
-    }
-
-    @PreUpdate
-    protected void preUpdate() {
-        updatedAt = Instant.now();
-    }
-
     public static User create(UUID id, String email, String firstName, String lastName, UserStatus status) {
         if (id == null) {
             throw new IllegalArgumentException("User id must not be null");
@@ -66,6 +54,21 @@ public class User {
                 .lastName(lastName)
                 .status(status)
                 .build();
+    }
+
+    @PrePersist
+    protected void prePersist() {
+        Instant now = Instant.now();
+        createdAt = now;
+        updatedAt = now;
+        if (this.status == null) {
+            this.status = UserStatus.ACTIVE;
+        }
+    }
+
+    @PreUpdate
+    protected void preUpdate() {
+        updatedAt = Instant.now();
     }
 
     public void updateProfile(String firstName, String lastName) {

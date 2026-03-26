@@ -1,7 +1,6 @@
 package com.maf.user.controller;
 
 import com.maf.user.dto.UpdateUserRequest;
-import com.maf.user.dto.UserResponse;
 import com.maf.user.entity.User;
 import com.maf.user.service.UserService;
 import jakarta.validation.Valid;

@@ -1,22 +1,26 @@
-version: "3.9"
-
 services:
   postgres:
     image: postgres:16-alpine
     container_name: postgres
     environment:
-      POSTGRES_USER: maf
-      POSTGRES_PASSWORD: maf
+      POSTGRES_USER: ${POSTGRES_USER:-maf}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
     ports:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./db/init:/docker-entrypoint-initdb.d:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U maf"]
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-maf}" ]
       interval: 5s
       timeout: 5s
       retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+    restart: unless-stopped
   auth-service:
     build:
       context: .
@@ -29,10 +33,10 @@ services:
     environment:
       SERVER_PORT: 8081
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/authdb
-      SPRING_DATASOURCE_USERNAME: maf
-      SPRING_DATASOURCE_PASSWORD: maf
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-maf}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
       SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: auth
-      SPRING_PROFILES_ACTIVE: dev
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
     depends_on:
       postgres:
@@ -41,8 +45,18 @@ services:
         condition: service_healthy
     env_file:
       - .env
-    volumes:
-      - ~/.m2:/root/.m2
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8081/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+    restart: unless-stopped
 
   user-service:
     build:
@@ -56,8 +70,8 @@ services:
     environment:
       SERVER_PORT: 8082
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/userdb
-      SPRING_DATASOURCE_USERNAME: maf
-      SPRING_DATASOURCE_PASSWORD: maf
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-maf}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
     depends_on:
       postgres:
@@ -66,6 +80,18 @@ services:
         condition: service_healthy
     env_file:
       - .env
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8082/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+    restart: unless-stopped
 
 
   product-service:
@@ -80,13 +106,26 @@ services:
     environment:
       SERVER_PORT: 8083
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/productdb
-      SPRING_DATASOURCE_USERNAME: maf
-      SPRING_DATASOURCE_PASSWORD: maf
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-maf}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
       SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: product
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     env_file:
       - .env
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8083/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+    restart: unless-stopped
 
   order-service:
     build:
@@ -100,13 +139,26 @@ services:
     environment:
       SERVER_PORT: 8084
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/orderdb
-      SPRING_DATASOURCE_USERNAME: maf
-      SPRING_DATASOURCE_PASSWORD: maf
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-maf}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
       SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: "order"
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     env_file:
       - .env
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8084/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+    restart: unless-stopped
 
   cart-service:
     build:
@@ -120,13 +172,26 @@ services:
     environment:
       SERVER_PORT: 8085
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/cartdb
-      SPRING_DATASOURCE_USERNAME: maf
-      SPRING_DATASOURCE_PASSWORD: maf
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-maf}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
       SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: cart
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     env_file:
       - .env
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8085/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+    restart: unless-stopped
 
   messaging-service:
     build:
@@ -140,13 +205,26 @@ services:
     environment:
       SERVER_PORT: 8086
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/messagingdb
-      SPRING_DATASOURCE_USERNAME: maf
-      SPRING_DATASOURCE_PASSWORD: maf
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-maf}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
       SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: messaging
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     env_file:
       - .env
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8086/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+    restart: unless-stopped
 
   notification-service:
     build:
@@ -160,13 +238,26 @@ services:
     environment:
       SERVER_PORT: 8087
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/notificationdb
-      SPRING_DATASOURCE_USERNAME: maf
-      SPRING_DATASOURCE_PASSWORD: maf
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-maf}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
       SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: notification
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     env_file:
       - .env
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8087/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+    restart: unless-stopped
 
   payment-service:
     build:
@@ -180,13 +271,26 @@ services:
     environment:
       SERVER_PORT: 8088
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/paymentdb
-      SPRING_DATASOURCE_USERNAME: maf
-      SPRING_DATASOURCE_PASSWORD: maf
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-maf}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
       SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: payment
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     env_file:
       - .env
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8088/actuator/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+    restart: unless-stopped
   kafka:
     image: apache/kafka:latest
     container_name: kafka
@@ -206,7 +310,7 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
     healthcheck:
-      test: ["CMD-SHELL", "nc -z localhost 9092 || exit 1"]
+      test: [ "CMD-SHELL", "nc -z localhost 9092 || exit 1" ]
       interval: 5s
       timeout: 5s
       retries: 15

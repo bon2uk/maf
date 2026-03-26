@@ -2,9 +2,9 @@ package com.maf.auth.service;
 
 import com.maf.auth.entity.RefreshToken;
 import com.maf.auth.entity.User;
-import com.maf.auth.util.JwtUtil;
 import com.maf.auth.repository.RefreshTokenRepository;
 import com.maf.auth.repository.UserRepository;
+import com.maf.auth.util.JwtUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

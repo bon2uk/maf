@@ -4,8 +4,6 @@ import com.maf.user.dto.UpdateUserRequest;
 import com.maf.user.entity.User;
 import com.maf.user.model.UserStatus;
 import com.maf.user.repository.UserRepository;
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;

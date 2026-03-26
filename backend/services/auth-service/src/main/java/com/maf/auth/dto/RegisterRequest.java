@@ -1,6 +1,6 @@
 package com.maf.auth.dto;
-import jakarta.validation.constraints.Email;
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -12,7 +12,7 @@ public class RegisterRequest {
     private String email;
 
     @NotBlank(message = "Password cannot be blank")
-    @Size(min = 8, message = "Password must be at least 6 characters long")
+    @Size(min = 8, message = "Password must be at least 8 characters long")
     private String password;
 
     private String firstName;

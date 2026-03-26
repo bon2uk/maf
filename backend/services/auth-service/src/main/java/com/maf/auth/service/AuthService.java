@@ -12,13 +12,13 @@ import com.maf.auth.repository.UserRepository;
 import com.maf.common.event.UserRegisteredEvent;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -57,10 +57,11 @@ public class AuthService {
     }
 
     public LoginResponse login(LoginRequest request) {
-        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new BadCredentialsException("Invalid email or password"));
 
-        if(!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
-            throw new RuntimeException("Invalid password");
+        if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
+            throw new BadCredentialsException("Invalid email or password");
         }
 
         String token = jwtService.generateToken(user);

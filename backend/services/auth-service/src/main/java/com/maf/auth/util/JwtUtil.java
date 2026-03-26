@@ -1,14 +1,20 @@
 package com.maf.auth.util;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.security.Key;
+import java.util.Base64;
 import java.util.Date;
 
+@Slf4j
 @Component
 public class JwtUtil {
 
@@ -18,20 +24,30 @@ public class JwtUtil {
     @Value("${JWT_EXPIRATION_MS}")
     private long jwtExpirationMs;
 
-    private final SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS512); // гарантовано ≥512 біт
+    private Key getSigningKey() {
+        if (jwtSecret == null || jwtSecret.isBlank()) {
+            throw new IllegalStateException("JWT secret key is not configured");
+        }
+        byte[] keyBytes = Base64.getDecoder().decode(jwtSecret);
+        return new SecretKeySpec(keyBytes, SignatureAlgorithm.HS512.getJcaName());
+    }
 
-    // Генерація токена за username/email
     public String generateTokenFromUsername(String username) {
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + jwtExpirationMs);
+
         return Jwts.builder()
                 .setSubject(username)
-                .signWith(key)
+                .setIssuedAt(now)
+                .setExpiration(expiryDate)
+                .signWith(getSigningKey(), SignatureAlgorithm.HS512)
                 .compact();
     }
 
-    // Додатково – можна методи для перевірки та парсингу токена
     public String getUserNameFromJwtToken(String token) {
-        return Jwts.parser()
-                .setSigningKey(jwtSecret)
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
@@ -39,10 +55,19 @@ public class JwtUtil {
 
     public boolean validateJwtToken(String authToken) {
         try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
+            Jwts.parserBuilder()
+                    .setSigningKey(getSigningKey())
+                    .build()
+                    .parseClaimsJws(authToken);
             return true;
-        } catch (Exception e) {
-            // тут можна логувати ExpiredJwtException, MalformedJwtException тощо
+        } catch (SignatureException e) {
+            log.error("Invalid JWT signature: {}", e.getMessage());
+        } catch (MalformedJwtException e) {
+            log.error("Invalid JWT token: {}", e.getMessage());
+        } catch (ExpiredJwtException e) {
+            log.error("JWT token is expired: {}", e.getMessage());
+        } catch (IllegalArgumentException e) {
+            log.error("JWT claims string is empty: {}", e.getMessage());
         }
         return false;
     }

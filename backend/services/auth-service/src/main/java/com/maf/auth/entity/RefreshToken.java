@@ -1,7 +1,9 @@
 package com.maf.auth.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -17,7 +19,7 @@ public class RefreshToken {
     private UUID id;
 
     @OneToOne
-    @JoinColumn(name="user_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     @Column(nullable = false, unique = true)

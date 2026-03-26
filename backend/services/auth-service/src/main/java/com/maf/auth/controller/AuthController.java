@@ -6,6 +6,7 @@ import com.maf.auth.service.AuthService;
 import com.maf.auth.service.JwtService;
 import com.maf.auth.service.RefreshTokenService;
 import com.maf.auth.util.JwtUtil;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -27,10 +28,10 @@ public class AuthController {
     private final JwtUtil jwtUtil;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
         try {
             User user = authService.register(request);
-            UserResponse response = new UserResponse(user.getEmail(),user.getId().toString());
+            UserResponse response = new UserResponse(user.getEmail(), user.getId().toString());
             return ResponseEntity.ok(response);
         } catch (DataIntegrityViolationException ex) {
             if (ex.getRootCause() != null && ex.getRootCause().getMessage().contains("duplicate key")) {
@@ -43,12 +44,12 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<?> login(@Valid @RequestBody LoginRequest request) {
         return ResponseEntity.ok(authService.login(request));
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<?> refresh(@RequestBody RefreshTokenRequest request) {
+    public ResponseEntity<?> refresh(@Valid @RequestBody RefreshTokenRequest request) {
         String requestToken = request.getRefreshToken();
 
         return refreshTokenService.findByToken(requestToken)
@@ -63,7 +64,7 @@ public class AuthController {
     }
 
     @PostMapping("/refresh-token")
-    public ResponseEntity<?> refreshToken(@RequestBody RefreshTokenRequest request) {
+    public ResponseEntity<?> refreshToken(@Valid @RequestBody RefreshTokenRequest request) {
         String requestRefreshToken = request.getRefreshToken();
 
         return refreshTokenService.findByToken(requestRefreshToken)
@@ -77,7 +78,7 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(@RequestBody RefreshTokenRequest request) {
+    public ResponseEntity<?> logout(@Valid @RequestBody RefreshTokenRequest request) {
         refreshTokenService.deleteByToken(request.getRefreshToken());
 
         return ResponseEntity.ok("Logged out successfully");

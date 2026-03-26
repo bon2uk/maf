@@ -6,25 +6,20 @@
 <module name="Checker">
     <property name="charset" value="UTF-8"/>
 
-    <!-- Дозволено на верхньому рівні -->
     <module name="LineLength">
         <property name="max" value="120"/>
     </module>
 
-    <!-- TreeWalker для більшості стилістичних перевірок -->
     <module name="TreeWalker">
 
-        <!-- Заборона wildcard імпортів -->
         <module name="AvoidStarImport"/>
 
-        <!-- Відступи -->
         <module name="Indentation">
             <property name="basicOffset" value="4"/>
             <property name="tabWidth" value="4"/>
             <property name="lineWrappingIndentation" value="8"/>
         </module>
 
-        <!-- Імпорти: порядок -->
         <module name="ImportOrder">
             <property name="groups" value="java, javax, org, com"/>
             <property name="ordered" value="true"/>
@@ -32,23 +27,19 @@
             <property name="option" value="top"/>
         </module>
 
-        <!-- Іменування -->
         <module name="MethodName"/>
         <module name="ParameterName"/>
         <module name="LocalVariableName"/>
         <module name="MemberName"/>
         <module name="ClassName"/>
 
-        <!-- Порожні блоки -->
         <module name="EmptyBlock">
             <property name="option" value="text"/>
         </module>
 
-        <!-- Пробіли -->
         <module name="WhitespaceAfter"/>
         <module name="WhitespaceAround"/>
 
-        <!-- TODO / FIXME коментарі -->
         <module name="TodoComment"/>
 
     </module>

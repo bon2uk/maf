@@ -30,7 +30,7 @@ public class AuthController {
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
         try {
             User user = authService.register(request);
-            UserResponse response = new UserResponse(user.getId().toString(), user.getEmail());
+            UserResponse response = new UserResponse(user.getEmail(),user.getId().toString());
             return ResponseEntity.ok(response);
         } catch (DataIntegrityViolationException ex) {
             if (ex.getRootCause() != null && ex.getRootCause().getMessage().contains("duplicate key")) {

@@ -1,5 +1,5 @@
 server:
-  port: 8081  # змінити під кожен сервіс
+  port: 8082
 
 spring:
   datasource:
@@ -10,3 +10,14 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  kafka:
+    bootstrap-servers: kafka:9092
+    consumer:
+      group-id: user-service
+      auto-offset-reset: earliest
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info

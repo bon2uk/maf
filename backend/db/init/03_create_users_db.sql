@@ -1,5 +1,4 @@
--- Enable UUID generation
-CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+\connect userdb
 
 -- Users
 CREATE TABLE users (
@@ -10,5 +9,4 @@ CREATE TABLE users (
     last_name VARCHAR(100),
     created_at TIMESTAMP NOT NULL,
     updated_at TIMESTAMP NOT NULL
-);
 );

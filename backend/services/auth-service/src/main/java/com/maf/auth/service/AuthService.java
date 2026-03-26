@@ -6,8 +6,10 @@ import com.maf.auth.dto.RegisterRequest;
 import com.maf.auth.entity.Role;
 import com.maf.auth.entity.User;
 import com.maf.auth.exception.UserAlreadyExistsException;
+import com.maf.auth.kafka.UserEventProducer;
 import com.maf.auth.repository.RoleRepository;
 import com.maf.auth.repository.UserRepository;
+import com.maf.common.event.UserRegisteredEvent;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,6 +29,7 @@ public class AuthService {
     private final JwtService jwtService;
     private final RefreshTokenService refreshTokenService;
     private final RoleRepository roleRepository;
+    private final UserEventProducer userEventProducer;
 
     @Transactional
     public User register(RegisterRequest registerRequest) {
@@ -47,7 +50,10 @@ public class AuthService {
                 .roles(new HashSet<>(Set.of(userRole))) // додаємо роль одразу
                 .build();
 
-        return userRepository.save(user);
+        userRepository.save(user);
+        userEventProducer.publishUserRegisteredEvent(new UserRegisteredEvent(user.getId(), user.getEmail(), user.getFirstName(), user.getLastName(), Instant.now()));
+
+        return user;
     }
 
     public LoginResponse login(LoginRequest request) {

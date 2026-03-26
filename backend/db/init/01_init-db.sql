@@ -9,7 +9,6 @@ BEGIN
 END
 $do$;
 
--- Створюємо бази та призначаємо власником maf
 CREATE DATABASE authdb OWNER maf;
 CREATE DATABASE userdb OWNER maf;
 CREATE DATABASE productdb OWNER maf;

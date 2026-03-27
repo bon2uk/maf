@@ -19,6 +19,9 @@ public class UserRegisteredConsumer {
 
     @KafkaListener(topics = "auth.user-registered", groupId = "user-service")
     public void handle(UserRegisteredEvent event) {
+        if ("fail@test.com".equals(event.email())) {
+            throw new RuntimeException("test kafka retry");
+        }
         log.info("User registered event received", event.id());
         if (userRepository.existsById(event.id())) {
             log.info("User {} already exists, skipping", event.id());

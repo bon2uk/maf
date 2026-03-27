@@ -2,7 +2,7 @@ package com.maf.auth.config;
 
 import com.maf.auth.entity.User;
 import com.maf.auth.repository.UserRepository;
-import com.maf.auth.service.JwtService;
+import com.maf.common.security.JwtTokenValidator;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,11 +15,11 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-@Component
+@Component("authServiceJwtAuthenticationFilter")
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtService jwtService;
+    private final JwtTokenValidator jwtTokenValidator;
     private final UserRepository userRepository;
 
     @Override
@@ -28,13 +28,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
-        String path = request.getServletPath();
-        // Пропускаємо реєстрацію та логін
-        if (path.equals("/api/auth/register") || path.equals("/api/auth/login")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
-
         String authHeader = request.getHeader("Authorization");
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
@@ -42,11 +35,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         String jwt = authHeader.substring(7);
-        String email = jwtService.extractUsername(jwt);
 
-        if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (jwtTokenValidator.isTokenValid(jwt)) {
+            String email = jwtTokenValidator.extractUsername(jwt);
             User user = userRepository.findByEmail(email).orElse(null);
-            if (user != null && jwtService.isTokenValid(jwt, user)) {
+            
+            if (user != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authToken);

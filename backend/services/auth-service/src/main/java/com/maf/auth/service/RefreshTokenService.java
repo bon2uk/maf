@@ -4,7 +4,6 @@ import com.maf.auth.entity.RefreshToken;
 import com.maf.auth.entity.User;
 import com.maf.auth.repository.RefreshTokenRepository;
 import com.maf.auth.repository.UserRepository;
-import com.maf.auth.util.JwtUtil;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,6 @@ import java.util.Optional;
 public class RefreshTokenService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final UserRepository userRepository;
-    private final JwtUtil jwtUtil;
 
     private final long refreshTokenDurationMs = 7 * 24 * 60 * 60 * 1000; // 7 днів
     private final SecureRandom secureRandom = new SecureRandom();

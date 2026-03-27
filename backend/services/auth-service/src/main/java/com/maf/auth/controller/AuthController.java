@@ -5,7 +5,6 @@ import com.maf.auth.entity.User;
 import com.maf.auth.service.AuthService;
 import com.maf.auth.service.JwtService;
 import com.maf.auth.service.RefreshTokenService;
-import com.maf.auth.util.JwtUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -25,7 +24,6 @@ public class AuthController {
     private final AuthService authService;
     private final RefreshTokenService refreshTokenService;
     private final JwtService jwtService;
-    private final JwtUtil jwtUtil;
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {

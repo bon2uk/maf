@@ -1,10 +1,14 @@
-package com.maf.user.config;
+package com.maf.common.security;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.SignatureException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
@@ -14,8 +18,8 @@ import java.util.List;
 import java.util.function.Function;
 
 @Slf4j
-@Service
-public class JwtService {
+@Component
+public class JwtTokenValidator {
 
     @Value("${JWT_SECRET_KEY}")
     private String secretKey;
@@ -51,23 +55,28 @@ public class JwtService {
         return false;
     }
 
+    public String extractUserId(String token) {
+        Claims claims = extractAllClaims(token);
+        return claims.get("userId", String.class);
+    }
+
     @SuppressWarnings("unchecked")
     public List<String> extractRoles(String token) {
         Claims claims = extractAllClaims(token);
         return claims.get("roles", List.class);
     }
 
-    private boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
-    }
-
-    private Date extractExpiration(String token) {
+    public Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
+    }
+
+    private boolean isTokenExpired(String token) {
+        return extractExpiration(token).before(new Date());
     }
 
     private Claims extractAllClaims(String token) {

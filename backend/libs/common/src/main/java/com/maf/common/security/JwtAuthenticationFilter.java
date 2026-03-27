@@ -1,4 +1,4 @@
-package com.maf.user.config;
+package com.maf.common.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -17,11 +17,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
-@Component
+@Component("commonJwtAuthenticationFilter")
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtService jwtService;
+    private final JwtTokenValidator jwtTokenValidator;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -37,18 +37,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String jwt = authHeader.substring(7);
 
-        if (jwtService.isTokenValid(jwt)) {
-            String email = jwtService.extractUsername(jwt);
-            List<String> roles = jwtService.extractRoles(jwt);
+        if (jwtTokenValidator.isTokenValid(jwt)) {
+            String userId = jwtTokenValidator.extractUserId(jwt);
+            List<String> roles = jwtTokenValidator.extractRoles(jwt);
 
             var authorities = roles != null
                     ? roles.stream()
-                    .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
-                    .collect(Collectors.toList())
+                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                        .collect(Collectors.toList())
                     : List.<SimpleGrantedAuthority>of();
 
             UsernamePasswordAuthenticationToken authToken =
-                    new UsernamePasswordAuthenticationToken(email, null, authorities);
+                    new UsernamePasswordAuthenticationToken(userId, null, authorities);
             SecurityContextHolder.getContext().setAuthentication(authToken);
         }
 

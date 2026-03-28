@@ -1,5 +1,6 @@
 package com.maf.product.controller;
 
+import com.maf.product.dto.ProductResponse;
 import com.maf.product.dto.UpdateProductRequest;
 import com.maf.product.entity.Product;
 import com.maf.product.service.ProductService;
@@ -24,18 +25,18 @@ public class ProductsController {
     private final ProductService productService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Product> getById(@PathVariable UUID id) {
-        return ResponseEntity.ok(productService.getProductById(id));
+    public ResponseEntity<ProductResponse> getById(@PathVariable UUID id) {
+        return ResponseEntity.ok(ProductResponse.from(productService.getProductById(id)));
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Product> updateById(@PathVariable UUID id, @Valid @RequestBody UpdateProductRequest updateProductRequest) {
-        return ResponseEntity.ok(productService.updateProduct(id, updateProductRequest));
+    public ResponseEntity<ProductResponse> updateById(@PathVariable UUID id, @Valid @RequestBody UpdateProductRequest updateProductRequest) {
+        return ResponseEntity.ok(ProductResponse.from(productService.updateProduct(id, updateProductRequest)));
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<Product>> getAllProducts() {
-        return ResponseEntity.ok(productService.getAllProducts());
+    public ResponseEntity<List<ProductResponse>> getAllProducts() {
+        return ResponseEntity.ok(productService.getAllProducts().stream().map(ProductResponse::from).toList());
     }
 
 }

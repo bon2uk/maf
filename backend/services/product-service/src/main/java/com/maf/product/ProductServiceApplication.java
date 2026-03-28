@@ -2,8 +2,10 @@ package com.maf.product;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
+@ComponentScan(basePackages = {"com.maf.product", "com.maf.common"})
 public class ProductServiceApplication {
 
     public static void main(String[] args) {

@@ -47,4 +47,16 @@ public class UserController {
        return ResponseEntity.ok(UserResponse.from(user));
     }
 
+    @PatchMapping("/me")
+    public ResponseEntity<UserResponse> updateCurrentUser( Authentication authentication,  @Valid @RequestBody UpdateUserRequest updateUserRequest) {
+        String userId = (String) authentication.getPrincipal();
+        if(userId == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        }
+        User user = userService.getUserById(UUID.fromString(userId));
+        user = userService.updateUser(user.getId(), updateUserRequest);
+
+       return ResponseEntity.ok(UserResponse.from(user));
+    }
+
 }

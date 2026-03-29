@@ -1,0 +1,9 @@
+jwt:
+  secret-key: dGVzdC1zZWNyZXQta2V5LWZvci1qd3QtdG9rZW4tdmFsaWRhdGlvbi10ZXN0aW5n
+
+spring:
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes: []

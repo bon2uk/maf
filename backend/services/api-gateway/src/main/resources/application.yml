@@ -1,0 +1,104 @@
+server:
+  port: ${SERVER_PORT:8080}
+
+spring:
+  application:
+    name: api-gateway
+  main:
+    web-application-type: reactive
+
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            # Auth Service - Public endpoints
+            - id: auth-service
+              uri: ${AUTH_SERVICE_URL:http://localhost:8081}
+              predicates:
+                - Path=/api/auth/**
+
+            # User Service
+            - id: user-service
+              uri: ${USER_SERVICE_URL:http://localhost:8082}
+              predicates:
+                - Path=/api/users/**
+
+            # Product Service
+            - id: product-service
+              uri: ${PRODUCT_SERVICE_URL:http://localhost:8083}
+              predicates:
+                - Path=/api/products/**
+
+            # Order Service
+            - id: order-service
+              uri: ${ORDER_SERVICE_URL:http://localhost:8084}
+              predicates:
+                - Path=/api/orders/**
+
+            # Cart Service
+            - id: cart-service
+              uri: ${CART_SERVICE_URL:http://localhost:8085}
+              predicates:
+                - Path=/api/cart/**,/api/carts/**
+
+            # Messaging Service
+            - id: messaging-service
+              uri: ${MESSAGING_SERVICE_URL:http://localhost:8086}
+              predicates:
+                - Path=/api/messages/**
+
+            # Notification Service
+            - id: notification-service
+              uri: ${NOTIFICATION_SERVICE_URL:http://localhost:8087}
+              predicates:
+                - Path=/api/notifications/**
+
+            # Payment Service
+            - id: payment-service
+              uri: ${PAYMENT_SERVICE_URL:http://localhost:8088}
+              predicates:
+                - Path=/api/payments/**
+
+          globalcors:
+            cors-configurations:
+              '[/**]':
+                allowedOrigins: "${CORS_ALLOWED_ORIGINS:http://localhost:3000}"
+                allowedMethods:
+                  - GET
+                  - POST
+                  - PUT
+                  - PATCH
+                  - DELETE
+                  - OPTIONS
+                allowedHeaders: "*"
+                allowCredentials: true
+                maxAge: 3600
+
+          default-filters:
+            - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+
+# JWT Configuration
+jwt:
+  secret-key: ${JWT_SECRET_KEY}
+
+# Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway
+  endpoint:
+    health:
+      show-details: always
+    gateway:
+      access: unrestricted
+
+# Logging
+logging:
+  level:
+    root: INFO
+    com.maf.gateway: DEBUG
+    org.springframework.cloud.gateway: INFO
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"

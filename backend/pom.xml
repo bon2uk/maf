@@ -19,6 +19,7 @@
     <name>maf-backend</name>
 
     <modules>
+        <module>services/api-gateway</module>
         <module>services/auth-service</module>
         <module>services/product-service</module>
         <module>services/cart-service</module>

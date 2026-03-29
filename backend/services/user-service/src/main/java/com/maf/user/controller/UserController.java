@@ -1,5 +1,6 @@
 package com.maf.user.controller;
 
+import com.maf.common.entity.CustomUserPrincipal;
 import com.maf.user.dto.UpdateUserRequest;
 import com.maf.user.dto.UserResponse;
 import com.maf.user.entity.User;
@@ -10,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -37,26 +37,25 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<UserResponse> getCurrentUser( Authentication authentication) {
-        String userId = (String) authentication.getPrincipal();
-        if(userId == null) {
+    public ResponseEntity<UserResponse> getCurrentUser(Authentication authentication) {
+        CustomUserPrincipal principal = (CustomUserPrincipal) authentication.getPrincipal();
+        if (principal == null || principal.getUserId() == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
-        User user = userService.getUserById(UUID.fromString(userId));
+        User user = userService.getUserById(principal.getUserId());
 
-       return ResponseEntity.ok(UserResponse.from(user));
+        return ResponseEntity.ok(UserResponse.from(user));
     }
 
     @PatchMapping("/me")
-    public ResponseEntity<UserResponse> updateCurrentUser( Authentication authentication,  @Valid @RequestBody UpdateUserRequest updateUserRequest) {
-        String userId = (String) authentication.getPrincipal();
-        if(userId == null) {
+    public ResponseEntity<UserResponse> updateCurrentUser(Authentication authentication, @Valid @RequestBody UpdateUserRequest updateUserRequest) {
+        CustomUserPrincipal principal = (CustomUserPrincipal) authentication.getPrincipal();
+        if (principal == null || principal.getUserId() == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
         }
-        User user = userService.getUserById(UUID.fromString(userId));
-        user = userService.updateUser(user.getId(), updateUserRequest);
+        User user = userService.updateUser(principal.getUserId(), updateUserRequest);
 
-       return ResponseEntity.ok(UserResponse.from(user));
+        return ResponseEntity.ok(UserResponse.from(user));
     }
 
 }

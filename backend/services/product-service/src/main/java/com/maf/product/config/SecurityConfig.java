@@ -1,7 +1,6 @@
 package com.maf.product.config;
 
 import com.maf.common.security.JwtAuthenticationFilter;
-import jakarta.servlet.Filter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,6 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
+
 
     public SecurityConfig(@Qualifier("commonJwtAuthenticationFilter") JwtAuthenticationFilter jwtAuthFilter) {
         this.jwtAuthFilter = jwtAuthFilter;

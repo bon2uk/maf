@@ -1,5 +1,7 @@
 package com.maf.product.controller;
 
+import com.maf.common.entity.CustomUserPrincipal;
+import com.maf.product.dto.CreateProductRequest;
 import com.maf.product.dto.ProductResponse;
 import com.maf.product.dto.UpdateProductRequest;
 import com.maf.product.entity.Product;
@@ -8,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +30,19 @@ public class ProductsController {
     @GetMapping("/{id}")
     public ResponseEntity<ProductResponse> getById(@PathVariable UUID id) {
         return ResponseEntity.ok(ProductResponse.from(productService.getProductById(id)));
+    }
+
+
+    @PostMapping("/create")
+    public ResponseEntity<ProductResponse> createProduct(@AuthenticationPrincipal CustomUserPrincipal principal,
+        @Valid @RequestBody CreateProductRequest request) {
+        return ResponseEntity.ok(ProductResponse.from(productService.createProduct(
+                request.name(),
+                request.description(),
+                principal.getUserId(),
+                request.price(),
+                request.currency()
+        )));
     }
 
     @PatchMapping("/{id}")

@@ -1,5 +1,6 @@
 package com.maf.common.security;
 
+import com.maf.common.entity.CustomUserPrincipal;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,6 +15,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -43,12 +45,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             var authorities = roles != null
                     ? roles.stream()
-                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
-                        .collect(Collectors.toList())
+                    .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                    .toList()
                     : List.<SimpleGrantedAuthority>of();
 
+            CustomUserPrincipal principal = new CustomUserPrincipal(
+                    UUID.fromString(userId),
+                    authorities
+            );
+
             UsernamePasswordAuthenticationToken authToken =
-                    new UsernamePasswordAuthenticationToken(userId, null, authorities);
+                    new UsernamePasswordAuthenticationToken(principal, null, authorities);
             SecurityContextHolder.getContext().setAuthentication(authToken);
         }
 

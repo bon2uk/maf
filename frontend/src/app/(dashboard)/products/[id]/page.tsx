@@ -30,10 +30,7 @@ export default function EditProductPage({ params }: EditProductPageProps) {
 
   return (
     <div className="space-y-6 max-w-2xl">
-      <PageHeader
-        title="Edit Product"
-        description={`Editing "${product.name}"`}
-      />
+      <PageHeader title="Edit Product" description={`Editing "${product.name}"`} />
       <ProductForm product={product} mode="edit" />
     </div>
   );

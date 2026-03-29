@@ -25,10 +25,11 @@ export function useAuth() {
       router.replace("/");
     },
     onError: (error: Error) => {
-      const message = error instanceof ApiError && error.data
-        ? (error.data as { message?: string })?.message || error.message
-        : error.message || "Invalid credentials";
-      
+      const message =
+        error instanceof ApiError && error.data
+          ? (error.data as { message?: string })?.message || error.message
+          : error.message || "Invalid credentials";
+
       toast({
         variant: "destructive",
         title: "Login failed",
@@ -41,7 +42,7 @@ export function useAuth() {
     await executeLogout();
     queryClient.clear();
     router.replace("/login");
-    
+
     toast({
       title: "Logged out",
       description: "You have been logged out successfully.",

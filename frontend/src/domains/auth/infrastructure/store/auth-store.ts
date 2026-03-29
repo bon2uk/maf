@@ -25,7 +25,7 @@ export const useAuthStore = create<AuthStore>()(
           console.error("setTokens called with invalid token:", tokens);
           return;
         }
-        
+
         if (typeof window !== "undefined") {
           localStorage.setItem("access_token", tokens.accessToken);
         }
@@ -59,7 +59,7 @@ export const useAuthStore = create<AuthStore>()(
         if (error) {
           console.error("Auth hydration error:", error);
         }
-        
+
         if (state) {
           // Sync localStorage access_token with persisted state on hydration
           if (typeof window !== "undefined") {

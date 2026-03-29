@@ -10,11 +10,7 @@ interface ProductFiltersProps {
   onClear: () => void;
 }
 
-export function ProductFilters({
-  search,
-  onSearchChange,
-  onClear,
-}: ProductFiltersProps) {
+export function ProductFilters({ search, onSearchChange, onClear }: ProductFiltersProps) {
   const hasFilters = !!search;
 
   return (

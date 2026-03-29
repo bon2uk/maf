@@ -16,13 +16,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 
 interface ProductFormProps {
   product?: Product;
@@ -106,13 +100,7 @@ export function ProductForm({ product, mode }: ProductFormProps) {
                   <FormItem>
                     <FormLabel>Price</FormLabel>
                     <FormControl>
-                      <Input
-                        type="number"
-                        step="0.01"
-                        min="0"
-                        placeholder="0.00"
-                        {...field}
-                      />
+                      <Input type="number" step="0.01" min="0" placeholder="0.00" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -152,8 +140,8 @@ export function ProductForm({ product, mode }: ProductFormProps) {
                     ? "Creating..."
                     : "Saving..."
                   : mode === "create"
-                  ? "Create Product"
-                  : "Save Changes"}
+                    ? "Create Product"
+                    : "Save Changes"}
               </Button>
             </div>
           </form>

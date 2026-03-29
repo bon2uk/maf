@@ -79,18 +79,13 @@ export function ProductTable({ products }: ProductTableProps) {
           {products.map((product) => (
             <TableRow key={product.id}>
               <TableCell className="font-medium">
-                <Link
-                  href={`/products/${product.id}`}
-                  className="hover:underline"
-                >
+                <Link href={`/products/${product.id}`} className="hover:underline">
                   {product.name}
                 </Link>
               </TableCell>
               <TableCell>{formatPrice(product.price, product.currency)}</TableCell>
               <TableCell>
-                <Badge variant={getStatusVariant(product.status)}>
-                  {product.status}
-                </Badge>
+                <Badge variant={getStatusVariant(product.status)}>{product.status}</Badge>
               </TableCell>
               <TableCell className="text-muted-foreground">
                 {formatDate(product.createdAt)}

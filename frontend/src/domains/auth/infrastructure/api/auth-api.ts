@@ -13,10 +13,14 @@ interface RefreshTokenResponse {
 
 export const authApi = {
   login: async (credentials: LoginCredentials): Promise<AuthTokens> => {
-    const response = await api.post<LoginResponse>("/auth/login", {
-      email: credentials.email,
-      password: credentials.password,
-    }, true);
+    const response = await api.post<LoginResponse>(
+      "/auth/login",
+      {
+        email: credentials.email,
+        password: credentials.password,
+      },
+      true
+    );
 
     return {
       accessToken: response.token,
@@ -25,9 +29,13 @@ export const authApi = {
   },
 
   refreshToken: async (refreshToken: string): Promise<AuthTokens> => {
-    const response = await api.post<RefreshTokenResponse>("/auth/refresh", {
-      refreshToken: refreshToken,
-    }, true);
+    const response = await api.post<RefreshTokenResponse>(
+      "/auth/refresh",
+      {
+        refreshToken: refreshToken,
+      },
+      true
+    );
 
     return {
       accessToken: response.token,

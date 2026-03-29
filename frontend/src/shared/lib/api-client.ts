@@ -28,9 +28,12 @@ function getAuthToken(): string | null {
   return localStorage.getItem("access_token");
 }
 
-function buildUrl(endpoint: string, params?: Record<string, string | number | boolean | undefined>): string {
+function buildUrl(
+  endpoint: string,
+  params?: Record<string, string | number | boolean | undefined>
+): string {
   const url = new URL(`${API_BASE_URL}${endpoint}`);
-  
+
   if (params) {
     Object.entries(params).forEach(([key, value]) => {
       if (value !== undefined) {
@@ -38,7 +41,7 @@ function buildUrl(endpoint: string, params?: Record<string, string | number | bo
       }
     });
   }
-  
+
   return url.toString();
 }
 
@@ -57,12 +60,12 @@ async function handleResponse<T>(response: Response): Promise<T> {
 
 export async function apiClient<T>(endpoint: string, config: RequestConfig = {}): Promise<T> {
   const { method = "GET", body, headers = {}, params, skipAuth = false } = config;
-  
+
   const requestHeaders: Record<string, string> = {
     "Content-Type": "application/json",
     ...headers,
   };
-  
+
   if (!skipAuth) {
     const token = getAuthToken();
     if (token) {
@@ -82,16 +85,13 @@ export async function apiClient<T>(endpoint: string, config: RequestConfig = {})
 export const api = {
   get: <T>(endpoint: string, params?: Record<string, string | number | boolean | undefined>) =>
     apiClient<T>(endpoint, { method: "GET", params }),
-    
+
   post: <T>(endpoint: string, body?: unknown, skipAuth?: boolean) =>
     apiClient<T>(endpoint, { method: "POST", body, skipAuth }),
-    
-  put: <T>(endpoint: string, body?: unknown) =>
-    apiClient<T>(endpoint, { method: "PUT", body }),
-    
-  patch: <T>(endpoint: string, body?: unknown) =>
-    apiClient<T>(endpoint, { method: "PATCH", body }),
-    
-  delete: <T>(endpoint: string) =>
-    apiClient<T>(endpoint, { method: "DELETE" }),
+
+  put: <T>(endpoint: string, body?: unknown) => apiClient<T>(endpoint, { method: "PUT", body }),
+
+  patch: <T>(endpoint: string, body?: unknown) => apiClient<T>(endpoint, { method: "PATCH", body }),
+
+  delete: <T>(endpoint: string) => apiClient<T>(endpoint, { method: "DELETE" }),
 };

@@ -45,9 +45,7 @@ const reducer = (state: State, action: Action): State => {
     case "UPDATE_TOAST":
       return {
         ...state,
-        toasts: state.toasts.map((t) =>
-          t.id === action.toast.id ? { ...t, ...action.toast } : t
-        ),
+        toasts: state.toasts.map((t) => (t.id === action.toast.id ? { ...t, ...action.toast } : t)),
       };
     case "DISMISS_TOAST": {
       const { toastId } = action;
@@ -92,8 +90,7 @@ function toast(props: ToastProps) {
   return {
     id,
     dismiss: () => dispatch({ type: "DISMISS_TOAST", toastId: id }),
-    update: (props: ToastProps) =>
-      dispatch({ type: "UPDATE_TOAST", toast: { ...props, id } }),
+    update: (props: ToastProps) => dispatch({ type: "UPDATE_TOAST", toast: { ...props, id } }),
   };
 }
 

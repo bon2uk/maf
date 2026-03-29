@@ -12,28 +12,26 @@ import { productMapper } from "../../application/mappers/product-mapper";
 export const productApi = {
   getProducts: async (filters: ProductFilters = {}): Promise<PaginatedProducts> => {
     const response = await api.get<ProductResponse[]>("/products/list");
-    
+
     let items = response.map(productMapper.toDomain);
-    
+
     if (filters.search) {
       const search = filters.search.toLowerCase();
       items = items.filter(
-        (p) =>
-          p.name.toLowerCase().includes(search) ||
-          p.description.toLowerCase().includes(search)
+        (p) => p.name.toLowerCase().includes(search) || p.description.toLowerCase().includes(search)
       );
     }
-    
+
     if (filters.status) {
       items = items.filter((p) => p.status === filters.status);
     }
-    
+
     const page = filters.page ?? 0;
     const size = filters.size ?? 10;
     const total = items.length;
     const totalPages = Math.ceil(total / size);
     const paginatedItems = items.slice(page * size, (page + 1) * size);
-    
+
     return {
       items: paginatedItems,
       total,

@@ -6,9 +6,9 @@ import { useAuthStore } from "../../infrastructure/store/auth-store";
 export async function executeLogin(credentials: LoginCredentials): Promise<Session> {
   const tokens = await authApi.login(credentials);
   const session = Session.fromTokens(tokens);
-  
+
   useAuthStore.getState().setTokens(tokens);
-  
+
   return session;
 }
 

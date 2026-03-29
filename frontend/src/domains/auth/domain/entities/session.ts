@@ -8,9 +8,7 @@ export class Session {
   ) {}
 
   static fromTokens(tokens: AuthTokens): Session {
-    const expiresAt = tokens.expiresIn
-      ? new Date(Date.now() + tokens.expiresIn * 1000)
-      : undefined;
+    const expiresAt = tokens.expiresIn ? new Date(Date.now() + tokens.expiresIn * 1000) : undefined;
 
     return new Session(tokens.accessToken, tokens.refreshToken, expiresAt);
   }

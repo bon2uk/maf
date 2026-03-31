@@ -1,5 +1,6 @@
 package com.maf.product.service;
 
+import com.maf.common.exception.EntityNotFoundException;
 import com.maf.product.dto.ProductFilterRequest;
 import com.maf.product.dto.ProductResponse;
 import com.maf.product.dto.UpdateProductRequest;
@@ -31,7 +32,8 @@ public class ProductService {
     }
 
     public Product getProductById(UUID id) {
-        return productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+        return productRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Product", id));
     }
 
     public Page<ProductResponse> getProducts(ProductFilterRequest filter, Pageable pageable) {

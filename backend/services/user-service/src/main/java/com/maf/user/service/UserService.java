@@ -1,5 +1,6 @@
 package com.maf.user.service;
 
+import com.maf.common.exception.EntityNotFoundException;
 import com.maf.user.dto.UpdateUserRequest;
 import com.maf.user.entity.User;
 import com.maf.user.model.UserStatus;
@@ -24,7 +25,8 @@ public class UserService {
     }
 
     public User getUserById(UUID id) {
-        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        return userRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("User", id));
     }
 
     public User updateUser(UUID id, UpdateUserRequest updateUserRequest) {

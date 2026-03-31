@@ -2,6 +2,7 @@ package com.maf.auth.service;
 
 import com.maf.auth.entity.RefreshToken;
 import com.maf.auth.entity.User;
+import com.maf.auth.exception.TokenExpiredException;
 import com.maf.auth.repository.RefreshTokenRepository;
 import com.maf.auth.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -50,7 +51,7 @@ public class RefreshTokenService {
     public String verifyExpiration(RefreshToken token) {
         if (token.getExpiryDate().isBefore(Instant.now())) {
             refreshTokenRepository.delete(token);
-            throw new RuntimeException("Refresh token was expired. Please login again.");
+            throw new TokenExpiredException("Refresh token expired. Please login again.");
         }
         return token.getToken();
     }

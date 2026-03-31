@@ -1,6 +1,7 @@
 package com.maf.user.controller;
 
 import com.maf.common.entity.CustomUserPrincipal;
+import com.maf.common.exception.EntityNotFoundException;
 import com.maf.user.dto.UpdateUserRequest;
 import com.maf.user.dto.UserResponse;
 import com.maf.user.entity.User;
@@ -8,16 +9,14 @@ import com.maf.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.UUID;
-@Slf4j
 
+@Slf4j
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
@@ -40,7 +39,7 @@ public class UserController {
     public ResponseEntity<UserResponse> getCurrentUser(Authentication authentication) {
         CustomUserPrincipal principal = (CustomUserPrincipal) authentication.getPrincipal();
         if (principal == null || principal.getUserId() == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+            throw new EntityNotFoundException("User", "authentication", "current user");
         }
         User user = userService.getUserById(principal.getUserId());
 
@@ -51,7 +50,7 @@ public class UserController {
     public ResponseEntity<UserResponse> updateCurrentUser(Authentication authentication, @Valid @RequestBody UpdateUserRequest updateUserRequest) {
         CustomUserPrincipal principal = (CustomUserPrincipal) authentication.getPrincipal();
         if (principal == null || principal.getUserId() == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+            throw new EntityNotFoundException("User", "authentication", "current user");
         }
         User user = userService.updateUser(principal.getUserId(), updateUserRequest);
 

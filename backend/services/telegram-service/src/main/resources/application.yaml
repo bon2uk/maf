@@ -1,0 +1,21 @@
+server:
+  port: 8089
+
+spring:
+  application:
+    name: telegram-service
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui
+
+telegram:
+  bot:
+    token: ${TELEGRAM_BOT_TOKEN:}
+    username: ${TELEGRAM_BOT_USERNAME:}

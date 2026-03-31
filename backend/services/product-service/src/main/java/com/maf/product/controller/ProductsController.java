@@ -53,8 +53,19 @@ public class ProductsController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<ProductResponse> updateById(@PathVariable UUID id, @Valid @RequestBody UpdateProductRequest updateProductRequest) {
-        return ResponseEntity.ok(ProductResponse.from(productService.updateProduct(id, updateProductRequest)));
+    public ResponseEntity<ProductResponse> updateById(
+            @AuthenticationPrincipal CustomUserPrincipal principal,
+            @PathVariable UUID id,
+            @Valid @RequestBody UpdateProductRequest updateProductRequest) {
+        return ResponseEntity.ok(ProductResponse.from(productService.updateProduct(id, principal.getUserId(), updateProductRequest)));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteById(
+            @AuthenticationPrincipal CustomUserPrincipal principal,
+            @PathVariable UUID id) {
+        productService.deleteProduct(id, principal.getUserId());
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping()

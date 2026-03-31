@@ -10,9 +10,10 @@ import com.maf.product.repository.ProductRepository;
 import com.maf.product.repository.ProductSpecifications;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.stereotype.Service;
 
 
 import java.math.BigDecimal;
@@ -53,10 +54,24 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Product updateProduct(UUID id, UpdateProductRequest updateProductRequest) {
+    public Product updateProduct(UUID id, UUID requestingUserId, UpdateProductRequest updateProductRequest) {
         Product product = getProductById(id);
+        verifyOwnership(product, requestingUserId);
         product.update(updateProductRequest.name(), updateProductRequest.description(), updateProductRequest.imageUrl(), updateProductRequest.price(), updateProductRequest.currency());
 
         return productRepository.save(product);
+    }
+
+    public void deleteProduct(UUID id, UUID requestingUserId) {
+        Product product = getProductById(id);
+        verifyOwnership(product, requestingUserId);
+        product.markAsDeleted();
+        productRepository.save(product);
+    }
+
+    private void verifyOwnership(Product product, UUID requestingUserId) {
+        if (!product.getUserId().equals(requestingUserId)) {
+            throw new AccessDeniedException("You can only modify your own products");
+        }
     }
 }

@@ -1,9 +1,22 @@
 server:
-  port: 8089
+  port: 8090
 
 spring:
-  application:
-    name: telegram-service
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration
+      - org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration
+      - org.springframework.boot.jdbc.autoconfigure.DataSourceInitializationAutoConfiguration
+      - org.springframework.boot.jdbc.autoconfigure.DataSourceTransactionManagerAutoConfiguration
+      - org.springframework.boot.jdbc.autoconfigure.health.DataSourceHealthContributorAutoConfiguration
+      - org.springframework.boot.hibernate.autoconfigure.HibernateJpaAutoConfiguration
+      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration
+
+telegram:
+  bot-token: ${TELEGRAM_BOT_TOKEN}
+  bot-username: ${TELEGRAM_BOT_USERNAME}
 
 management:
   endpoints:
@@ -14,8 +27,3 @@ management:
 springdoc:
   swagger-ui:
     path: /swagger-ui
-
-telegram:
-  bot:
-    token: ${TELEGRAM_BOT_TOKEN:}
-    username: ${TELEGRAM_BOT_USERNAME:}

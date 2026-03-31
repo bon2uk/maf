@@ -1,11 +1,12 @@
 package com.maf.telegram;
 
+import com.maf.telegram.config.TelegramProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.ComponentScan;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.maf.telegram", "com.maf.common"})
+@EnableConfigurationProperties(TelegramProperties.class)
 public class TelegramServiceApplication {
 
     public static void main(String[] args) {

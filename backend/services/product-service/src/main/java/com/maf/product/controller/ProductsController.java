@@ -22,7 +22,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -70,7 +69,13 @@ public class ProductsController {
             @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
     ) {
         ProductFilterRequest filter = new ProductFilterRequest(productStatus, userId, bookedId, name, minPrice, maxPrice, currency);
-
+        if (filter.minPrice() != null && filter.maxPrice() != null
+                && filter.minPrice().compareTo(filter.maxPrice()) > 0) {
+            throw new IllegalArgumentException("minPrice cannot be greater than maxPrice");
+        }
+        if (pageable.getPageSize() > 100) {
+            throw new IllegalArgumentException("Page size cannot exceed 100");
+        }
         return ResponseEntity.ok(productService.getProducts(filter, pageable));
     }
 

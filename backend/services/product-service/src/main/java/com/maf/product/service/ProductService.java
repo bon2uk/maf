@@ -69,9 +69,30 @@ public class ProductService {
         productRepository.save(product);
     }
 
+    public Product bookProduct(UUID id, UUID bookerId) {
+        Product product = getProductById(id);
+        product.book(bookerId);
+        return productRepository.save(product);
+    }
+
+    public Product unbookProduct(UUID id, UUID requestingUserId) {
+        Product product = getProductById(id);
+        verifyCanUnbook(product, requestingUserId);
+        product.unBook();
+        return productRepository.save(product);
+    }
+
     private void verifyOwnership(Product product, UUID requestingUserId) {
         if (!product.getUserId().equals(requestingUserId)) {
             throw new AccessDeniedException("You can only modify your own products");
+        }
+    }
+
+    private void verifyCanUnbook(Product product, UUID requestingUserId) {
+        boolean isOwner = product.getUserId().equals(requestingUserId);
+        boolean isBooker = requestingUserId.equals(product.getBookedById());
+        if (!isOwner && !isBooker) {
+            throw new AccessDeniedException("Only the owner or the person who booked can unbook");
         }
     }
 }

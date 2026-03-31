@@ -68,6 +68,20 @@ public class ProductsController {
         return ResponseEntity.noContent().build();
     }
 
+    @PostMapping("/{id}/book")
+    public ResponseEntity<ProductResponse> bookProduct(
+            @AuthenticationPrincipal CustomUserPrincipal principal,
+            @PathVariable UUID id) {
+        return ResponseEntity.ok(ProductResponse.from(productService.bookProduct(id, principal.getUserId())));
+    }
+
+    @PostMapping("/{id}/unbook")
+    public ResponseEntity<ProductResponse> unbookProduct(
+            @AuthenticationPrincipal CustomUserPrincipal principal,
+            @PathVariable UUID id) {
+        return ResponseEntity.ok(ProductResponse.from(productService.unbookProduct(id, principal.getUserId())));
+    }
+
     @GetMapping()
     public ResponseEntity<Page<ProductResponse>> getProducts(
             @RequestParam(required = false)ProductStatus productStatus,

@@ -2,6 +2,7 @@ package com.maf.telegram.bot;
 
 import com.maf.telegram.config.TelegramProperties;
 import com.maf.telegram.service.MessageService;
+import com.maf.telegram.service.TelegramMessageProcessingService;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
@@ -20,12 +21,16 @@ import java.util.List;
 public class TelegramPollingBot implements LongPollingUpdateConsumer {
 
     private final TelegramProperties properties;
+    private final MessageService messageService;
+    private final TelegramMessageProcessingService telegramMessageProcessingService;
     private TelegramBotsLongPollingApplication application;
     private BotSession botSession;
-    private MessageService messageService;
 
-    public TelegramPollingBot(TelegramProperties properties) {
+    public TelegramPollingBot(TelegramProperties properties, MessageService messageService,
+                              TelegramMessageProcessingService telegramMessageProcessingService) {
         this.properties = properties;
+        this.messageService = messageService;
+        this.telegramMessageProcessingService = telegramMessageProcessingService;
     }
 
     @PostConstruct
@@ -62,16 +67,35 @@ public class TelegramPollingBot implements LongPollingUpdateConsumer {
             Message message = update.getMessage();
             Chat chat = message.getChat();
 
+            String chatTitle = chat.getTitle() != null ? chat.getTitle() : "Private Chat";
+            Long senderId = message.getFrom() != null ? message.getFrom().getId() : 0L;
+            String senderUsername = message.getFrom() != null && message.getFrom().getUserName() != null
+                    ? message.getFrom().getUserName() : "unknown";
+            String text = message.getText() != null ? message.getText() : "";
+
             log.info(
                     "Received message: chatId={}, chatType={}, chatTitle={}, userId={}, username={}, text={}",
                     chat.getId(),
                     chat.getType(),
-                    chat.getTitle(),
-                    message.getFrom() != null ? message.getFrom().getId() : null,
-                    message.getFrom() != null ? message.getFrom().getUserName() : null,
-                    message.getText()
+                    chatTitle,
+                    senderId,
+                    senderUsername,
+                    text
             );
-            messageService.createMessage(message.getMessageId(),  chat.getId(),chat.getTitle() , message.getContact().getUserId(), message.getContact().getFirstName(), message.getText());
+
+            try {
+                var messageEntity = messageService.createMessage(
+                        message.getMessageId(),
+                        chat.getId(),
+                        chatTitle,
+                        senderId,
+                        senderUsername,
+                        text
+                );
+                telegramMessageProcessingService.processMessage(messageEntity);
+            } catch (Exception e) {
+                log.error("Failed to save message: {}", e.getMessage(), e);
+            }
         }
     }
 }

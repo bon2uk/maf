@@ -1,8 +1,6 @@
 package com.maf.telegram;
 
 import com.maf.telegram.config.TelegramProperties;
-import com.maf.telegram.entity.Message;
-import com.maf.telegram.repository.MessageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,16 +11,9 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 @RequiredArgsConstructor
 public class TelegramServiceApplication {
 
-    private final MessageRepository messageRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(TelegramServiceApplication.class, args);
     }
 
-    public Message createMessage(Integer telegramMessageId, Long chatId, String chatTitle,
-                                 Long senderId, String senderUsername, String text) {
-        Message message = Message.create(telegramMessageId, chatId, chatTitle,
-                senderId, senderUsername, text);
-        return messageRepository.save(message);
-    }
 }

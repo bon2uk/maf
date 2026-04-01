@@ -147,7 +147,7 @@ services:
       - "8083:8083"
     environment:
       SERVER_PORT: 8083
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/productdb
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/telegramdb
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-maf}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
       SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: product
@@ -347,7 +347,13 @@ services:
       SERVER_PORT: 8090
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN:?TELEGRAM_BOT_TOKEN is required}
       TELEGRAM_BOT_USERNAME: ${TELEGRAM_BOT_USERNAME:-}
-      SPRING_AUTOCONFIGURE_EXCLUDE: org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration,org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration,org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration,org.springframework.boot.jdbc.autoconfigure.DataSourceInitializationAutoConfiguration,org.springframework.boot.jdbc.autoconfigure.DataSourceTransactionManagerAutoConfiguration,org.springframework.boot.jdbc.autoconfigure.health.DataSourceHealthContributorAutoConfiguration,org.springframework.boot.hibernate.autoconfigure.HibernateJpaAutoConfiguration,org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration,org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/telegramdb
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-maf}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
+    depends_on:
+      postgres:
+        condition: service_healthy
     env_file:
       - .env
     healthcheck:

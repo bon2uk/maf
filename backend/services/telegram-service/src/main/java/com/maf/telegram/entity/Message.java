@@ -1,5 +1,6 @@
 package com.maf.telegram.entity;
 
+import com.maf.telegram.model.MessageProcessingStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -41,6 +42,16 @@ public class Message {
     @Setter(AccessLevel.NONE)
     private Instant receivedAt;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private MessageProcessingStatus status;
+
+    @Column(name = "parse_error")
+    private String parseError;
+
+    @Column(name = "processed_at")
+    private Instant processedAt;
+
     public static Message create(Integer telegramMessageId, Long chatId, String chatTitle,
                                    Long senderId, String senderUsername, String text) {
         return Message.builder()
@@ -51,7 +62,20 @@ public class Message {
                 .senderUsername(senderUsername)
                 .text(text)
                 .receivedAt(Instant.now())
+                .status(MessageProcessingStatus.NEW)
                 .build();
+    }
+
+    public void markParsed() {
+        if (this.status != MessageProcessingStatus.NEW) {
+            throw new IllegalStateException(
+                    "Cannot mark message as PARSED from status: " + this.status
+            );
+        }
+
+        this.status = MessageProcessingStatus.PARSED;
+        this.parseError = null;
+        this.processedAt = Instant.now();
     }
 
 }

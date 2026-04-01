@@ -1,6 +1,5 @@
-\connect productdb
+\connect telegramdb
 
--- Products
 CREATE TABLE telegram_messages (
     id UUID PRIMARY KEY,
     telegram_message_id INTEGER NOT NULL,
@@ -9,5 +8,8 @@ CREATE TABLE telegram_messages (
     sender_id BIGINT NOT NULL,
     sender_username VARCHAR(255) NOT NULL,
     text TEXT NOT NULL,
-    received_at TIMESTAMP NOT NULL
+    received_at TIMESTAMP NOT NULL,
+    status VARCHAR(50) NOT NULL DEFAULT 'NEW',
+    parse_error TEXT,
+    processed_at TIMESTAMP
 );

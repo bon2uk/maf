@@ -1,6 +1,7 @@
 package com.maf.telegram.bot;
 
 import com.maf.telegram.config.TelegramProperties;
+import com.maf.telegram.service.MessageService;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,7 @@ public class TelegramPollingBot implements LongPollingUpdateConsumer {
     private final TelegramProperties properties;
     private TelegramBotsLongPollingApplication application;
     private BotSession botSession;
+    private MessageService messageService;
 
     public TelegramPollingBot(TelegramProperties properties) {
         this.properties = properties;
@@ -54,18 +56,22 @@ public class TelegramPollingBot implements LongPollingUpdateConsumer {
         if (!update.hasMessage()) {
             return;
         }
+        if (update.getMessage().hasText() && update.getMessage().getText().startsWith("/")) {
+            log.info("Received command: {}", update.getMessage().getText());
+        } else {
+            Message message = update.getMessage();
+            Chat chat = message.getChat();
 
-        Message message = update.getMessage();
-        Chat chat = message.getChat();
-
-        log.info(
-                "Received message: chatId={}, chatType={}, chatTitle={}, userId={}, username={}, text={}",
-                chat.getId(),
-                chat.getType(),
-                chat.getTitle(),
-                message.getFrom() != null ? message.getFrom().getId() : null,
-                message.getFrom() != null ? message.getFrom().getUserName() : null,
-                message.getText()
-        );
+            log.info(
+                    "Received message: chatId={}, chatType={}, chatTitle={}, userId={}, username={}, text={}",
+                    chat.getId(),
+                    chat.getType(),
+                    chat.getTitle(),
+                    message.getFrom() != null ? message.getFrom().getId() : null,
+                    message.getFrom() != null ? message.getFrom().getUserName() : null,
+                    message.getText()
+            );
+            messageService.createMessage(message.getMessageId(),  chat.getId(),chat.getTitle() , message.getContact().getUserId(), message.getContact().getFirstName(), message.getText());
+        }
     }
 }

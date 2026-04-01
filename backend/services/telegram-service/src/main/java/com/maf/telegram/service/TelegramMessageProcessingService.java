@@ -17,11 +17,11 @@ public class TelegramMessageProcessingService {
 
     public void processMessage(Message message) {
         ParseResult parseResult = productMessageParser.parse(message.getText());
-
-        if(!parseResult.success()) {
+        log.info(parseResult.toString());
+        if (!parseResult.success()) {
             messageRepository.save(message);
             log.info("Message skipped, telegramMessageId={}, reason={}",
-                    message.getTelegramMessageId(), parseResult.failure("failed to parse message"));
+                    message.getTelegramMessageId(), ParseResult.failure("failed to parse message"));
             return;
         }
         message.markParsed();
@@ -29,6 +29,8 @@ public class TelegramMessageProcessingService {
 
         log.info("Message parsed successfully, telegramMessageId={}",
                 message.getTelegramMessageId());
+        log.info("Message parsed successfully, product candidate={}",
+                parseResult.productCandidate());
 
     }
 }

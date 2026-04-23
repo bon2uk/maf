@@ -25,13 +25,31 @@ public class KafkaProducerConfig {
         Map<String, Object> config = new HashMap<>();
         config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
         config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JacksonJsonSerializer.class); // ← ось тут було StringSerializer
-        config.put(JacksonJsonSerializer.ADD_TYPE_INFO_HEADERS, false); // щоб не ламалась десеріалізація в user-service
+        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JacksonJsonSerializer.class);
+        config.put(JacksonJsonSerializer.ADD_TYPE_INFO_HEADERS, false);
+        config.put(ProducerConfig.ACKS_CONFIG, "all");
+        config.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true);
         return new DefaultKafkaProducerFactory<>(config);
     }
 
     @Bean
     public KafkaTemplate<String, UserRegisteredEvent> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
+    }
+
+    @Bean
+    public ProducerFactory<String, String> stringProducerFactory() {
+        Map<String, Object> config = new HashMap<>();
+        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+        config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
+        config.put(ProducerConfig.ACKS_CONFIG, "all");
+        config.put(ProducerConfig.ENABLE_IDEMPOTENCE_CONFIG, true);
+        return new DefaultKafkaProducerFactory<>(config);
+    }
+
+    @Bean
+    public KafkaTemplate<String, String> stringKafkaTemplate() {
+        return new KafkaTemplate<>(stringProducerFactory());
     }
 }

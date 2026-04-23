@@ -69,7 +69,7 @@ services:
       dockerfile: Dockerfile
       args:
         MODULE_NAME: "auth-service"
-        MODULE_PATH: "services/auth-service"
+        MODULE_PATH: "services/auth"
     ports:
       - "8081:8081"
     environment:
@@ -106,7 +106,7 @@ services:
       dockerfile: Dockerfile
       args:
         MODULE_NAME: "user-service"
-        MODULE_PATH: "services/user-service"
+        MODULE_PATH: "services/user"
     ports:
       - "8082:8082"
     environment:
@@ -142,7 +142,7 @@ services:
       dockerfile: Dockerfile
       args:
         MODULE_NAME: "product-service"
-        MODULE_PATH: "services/product-service"
+        MODULE_PATH: "services/product"
     ports:
       - "8083:8083"
     environment:
@@ -175,7 +175,7 @@ services:
       dockerfile: Dockerfile
       args:
         MODULE_NAME: "order-service"
-        MODULE_PATH: "services/order-service"
+        MODULE_PATH: "services/order"
     ports:
       - "8084:8084"
     environment:
@@ -208,7 +208,7 @@ services:
       dockerfile: Dockerfile
       args:
         MODULE_NAME: "cart-service"
-        MODULE_PATH: "services/cart-service"
+        MODULE_PATH: "services/cart"
     ports:
       - "8085:8085"
     environment:
@@ -241,7 +241,7 @@ services:
       dockerfile: Dockerfile
       args:
         MODULE_NAME: "messaging-service"
-        MODULE_PATH: "services/messaging-service"
+        MODULE_PATH: "services/messaging"
     ports:
       - "8086:8086"
     environment:
@@ -274,7 +274,7 @@ services:
       dockerfile: Dockerfile
       args:
         MODULE_NAME: "notification-service"
-        MODULE_PATH: "services/notification-service"
+        MODULE_PATH: "services/notification"
     ports:
       - "8087:8087"
     environment:
@@ -307,7 +307,7 @@ services:
       dockerfile: Dockerfile
       args:
         MODULE_NAME: "payment-service"
-        MODULE_PATH: "services/payment-service"
+        MODULE_PATH: "services/payment"
     ports:
       - "8088:8088"
     environment:
@@ -340,7 +340,7 @@ services:
       dockerfile: Dockerfile
       args:
         MODULE_NAME: "telegram-service"
-        MODULE_PATH: "services/telegram-service"
+        MODULE_PATH: "services/telegram"
     ports:
       - "8090:8090"
     environment:

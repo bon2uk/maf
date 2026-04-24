@@ -369,6 +369,90 @@ services:
           memory: 512M
     restart: unless-stopped
 
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      OLLAMA_KEEP_ALIVE: "24h"
+    healthcheck:
+      test: ["CMD-SHELL", "ollama list >/dev/null 2>&1 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+          memory: 8G
+    restart: unless-stopped
+
+  llm-service:
+    build:
+      context: ./services/llm
+      dockerfile: Dockerfile
+    ports:
+      - "8091:8091"
+    environment:
+      LLM_OLLAMA_HOST: http://ollama:11434
+      LLM_OLLAMA_MODEL: ${LLM_OLLAMA_MODEL:-llama3.2:3b}
+      LLM_INTERNAL_TOKEN: ${LLM_INTERNAL_TOKEN:-}
+    depends_on:
+      ollama:
+        condition: service_healthy
+    env_file:
+      - .env
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8091/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+    restart: unless-stopped
+
+  parser-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        MODULE_NAME: "parser-service"
+        MODULE_PATH: "services/parser"
+    ports:
+      - "8092:8092"
+    environment:
+      SERVER_PORT: 8092
+      LLM_SERVICE_URL: http://llm-service:8091
+      LLM_INTERNAL_TOKEN: ${LLM_INTERNAL_TOKEN:?LLM_INTERNAL_TOKEN is required}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:?JWT_SECRET_KEY is required}
+      JWT_EXPIRATION_MS: ${JWT_EXPIRATION_MS:-3600000}
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
+    depends_on:
+      llm-service:
+        condition: service_healthy
+    env_file:
+      - .env
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8092/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
+    restart: unless-stopped
+
   kafka:
     image: apache/kafka:latest
     container_name: kafka
@@ -396,3 +480,4 @@ services:
 
 volumes:
   pgdata:
+  ollama_data:

@@ -1,0 +1,30 @@
+# Build outputs — let Docker build them fresh inside the builder stage.
+**/target/
+**/build/
+
+# IDE / OS noise
+.idea/
+.vscode/
+*.iml
+.DS_Store
+
+# Test / coverage artifacts
+**/surefire-reports/
+**/failsafe-reports/
+**/jacoco.exec
+**/.gradle/
+
+# Environment files: the only env that ships into images comes from
+# docker-compose. Keeping these out of the context reduces build size
+# and prevents accidental bakes of secrets into layers.
+.env
+.env.local
+.env.*.local
+
+# Python venvs that sometimes end up here during local hacking
+**/.venv/
+**/__pycache__/
+
+# VCS metadata isn't needed by Maven / Gradle / uvicorn
+.git/
+.gitignore

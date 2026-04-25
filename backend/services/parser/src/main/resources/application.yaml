@@ -1,0 +1,38 @@
+server:
+  port: 8092
+
+spring:
+  # In-memory DataSource purely to satisfy autoconfig. parser-service has
+  # no entities and never executes queries; this is a workaround until
+  # libs/common is split so stateless services can pull JWT helpers without
+  # the JPA starter. See pom.xml for context.
+  datasource:
+    url: jdbc:h2:mem:parser-noop;DB_CLOSE_DELAY=-1
+    username: sa
+    password: ""
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+
+parser:
+  llm:
+    base-url: ${LLM_SERVICE_URL:http://llm-service:8091}
+    internal-token: ${LLM_INTERNAL_TOKEN:?LLM_INTERNAL_TOKEN is required}
+    connect-timeout: 3s
+    read-timeout: 60s
+    # Total attempts (1 original + retries). We only retry transport errors
+    # and 5xx; 4xx aborts immediately because retries won't fix a bad
+    # request.
+    max-attempts: 2
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui

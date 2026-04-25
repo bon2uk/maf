@@ -78,4 +78,28 @@ public class Message {
         this.processedAt = Instant.now();
     }
 
+    public void markSkipped(String reason) {
+        if (this.status != MessageProcessingStatus.NEW) {
+            throw new IllegalStateException(
+                    "Cannot mark message as SKIPPED from status: " + this.status
+            );
+        }
+
+        this.status = MessageProcessingStatus.SKIPPED;
+        this.parseError = reason;
+        this.processedAt = Instant.now();
+    }
+
+    public void markFailed(String reason) {
+        if (this.status != MessageProcessingStatus.NEW) {
+            throw new IllegalStateException(
+                    "Cannot mark message as FAILED from status: " + this.status
+            );
+        }
+
+        this.status = MessageProcessingStatus.FAILED;
+        this.parseError = reason;
+        this.processedAt = Instant.now();
+    }
+
 }

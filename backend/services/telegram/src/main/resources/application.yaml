@@ -14,31 +14,22 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    baseline-version: 0
+    locations: classpath:db/migration
+
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:kafka:9092}
+    consumer:
+      group-id: telegram-service
 
 telegram:
   bot-token: ${TELEGRAM_BOT_TOKEN}
   bot-username: ${TELEGRAM_BOT_USERNAME}
-
-parser:
-  base-url: ${PARSER_SERVICE_URL:http://parser-service:8092}
-  connect-timeout: 3s
-  read-timeout: 60s
-  # Total attempts (1 original + retries). Retried only on transport
-  # errors and 5xx; 4xx aborts immediately.
-  max-attempts: 2
-
-# Self-issued JWT used for service-to-service calls to /internal/** routes.
-# The secret must match every other service's JWT_SECRET_KEY so the shared
-# JwtTokenValidator (libs/common) accepts the token.
-service-jwt:
-  secret-key: ${JWT_SECRET_KEY:?JWT_SECRET_KEY is required}
-  subject: telegram-service
-  # Deterministic UUID derived from the service name; the common filter
-  # calls UUID.fromString(userId) so this claim must be a valid UUID.
-  user-id: ${TELEGRAM_SERVICE_USER_ID:00000000-0000-0000-0000-00007e1e6500}
-  roles:
-    - SERVICE
-  ttl: 15m
+  outbox:
+    poll-delay-ms: 1000
 
 management:
   endpoints:

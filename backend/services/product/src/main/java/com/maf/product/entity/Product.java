@@ -24,7 +24,7 @@ public class Product {
     private UUID id;
 
     @Setter(AccessLevel.NONE)
-    @Column(nullable = false, updatable = false)
+    @Column(updatable = false)
     private UUID userId;
 
     @Column(nullable = false, length = 255)
@@ -64,6 +64,17 @@ public class Product {
     @Column(name = "booked_at")
     private Instant bookedAt;
 
+    @Setter(AccessLevel.NONE)
+    @Column(name = "source_message_id", updatable = false, unique = true)
+    private UUID sourceMessageId;
+
+    @Column(name = "category")
+    private String category;
+
+    @Setter(AccessLevel.NONE)
+    @Column(name = "parser_model", updatable = false)
+    private String parserModel;
+
     @Version
     private Long version;
 
@@ -81,6 +92,34 @@ public class Product {
                 .userId(userId)
                 .price(price)
                 .currency(currency)
+                .build();
+    }
+
+    public static Product createDraft(UUID sourceMessageId,
+                                      String name,
+                                      String description,
+                                      BigDecimal price,
+                                      CurrencyCode currency,
+                                      String category,
+                                      String parserModel) {
+        if (sourceMessageId == null) {
+            throw new IllegalArgumentException("sourceMessageId is required for drafts");
+        }
+        if (price == null || price.signum() < 0) {
+            throw new IllegalArgumentException("Price must be non-negative");
+        }
+        if (currency == null) {
+            throw new IllegalArgumentException("Currency cannot be blank");
+        }
+        return Product.builder()
+                .name(name)
+                .description(description)
+                .status(ProductStatus.DRAFT)
+                .price(price)
+                .currency(currency)
+                .sourceMessageId(sourceMessageId)
+                .category(category)
+                .parserModel(parserModel)
                 .build();
     }
 
@@ -175,7 +214,7 @@ public class Product {
             throw new IllegalStateException("Owner cannot book own product");
         }
     }
-    
+
     private static void validateName(String name) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Name cannot be blank");

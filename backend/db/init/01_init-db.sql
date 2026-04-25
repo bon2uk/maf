@@ -18,3 +18,4 @@ CREATE DATABASE messagingdb OWNER maf;
 CREATE DATABASE notificationdb OWNER maf;
 CREATE DATABASE paymentdb OWNER maf;
 CREATE DATABASE telegramdb OWNER maf;
+CREATE DATABASE parserdb OWNER maf;

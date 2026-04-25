@@ -32,6 +32,21 @@ public class ProductService {
         return productRepository.save(product);
     }
 
+    public Product createDraft(UUID sourceMessageId,
+                               String name,
+                               String description,
+                               BigDecimal price,
+                               CurrencyCode currency,
+                               String category,
+                               String parserModel) {
+        return productRepository.findBySourceMessageId(sourceMessageId)
+                .orElseGet(() -> {
+                    Product draft = Product.createDraft(
+                            sourceMessageId, name, description, price, currency, category, parserModel);
+                    return productRepository.save(draft);
+                });
+    }
+
     public Product getProductById(UUID id) {
         return productRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Product", id));

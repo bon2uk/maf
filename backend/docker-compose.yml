@@ -147,12 +147,15 @@ services:
       - "8083:8083"
     environment:
       SERVER_PORT: 8083
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/telegramdb
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/productdb
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-maf}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
-      SPRING_JPA_PROPERTIES_HIBERNATE_DEFAULT_SCHEMA: product
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:?JWT_SECRET_KEY is required}
     depends_on:
       postgres:
+        condition: service_healthy
+      kafka:
         condition: service_healthy
     env_file:
       - .env
@@ -351,12 +354,11 @@ services:
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-maf}
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
-      PARSER_SERVICE_URL: http://parser-service:8092
-      JWT_SECRET_KEY: ${JWT_SECRET_KEY:?JWT_SECRET_KEY is required}
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
     depends_on:
       postgres:
         condition: service_healthy
-      parser-service:
+      kafka:
         condition: service_healthy
     env_file:
       - .env
@@ -395,6 +397,22 @@ services:
           memory: 8G
     restart: unless-stopped
 
+  # One-shot init that guarantees the configured model is present in the
+  # ollama_data volume before llm-service starts. Idempotent: a re-run on a
+  # warm volume just verifies the model and exits.
+  ollama-init:
+    image: ollama/ollama:latest
+    depends_on:
+      ollama:
+        condition: service_healthy
+    environment:
+      OLLAMA_HOST: http://ollama:11434
+      LLM_OLLAMA_MODEL: ${LLM_OLLAMA_MODEL:-llama3.2:3b}
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - 'echo "Ensuring Ollama model $$LLM_OLLAMA_MODEL is present..." && ollama pull "$$LLM_OLLAMA_MODEL" && echo "Model ready."'
+    restart: "no"
+
   llm-service:
     build:
       context: ./services/llm
@@ -408,6 +426,8 @@ services:
     depends_on:
       ollama:
         condition: service_healthy
+      ollama-init:
+        condition: service_completed_successfully
     env_file:
       - .env
     # Healthcheck is defined in the image's Dockerfile (Python-based; the
@@ -436,8 +456,16 @@ services:
       JWT_SECRET_KEY: ${JWT_SECRET_KEY:?JWT_SECRET_KEY is required}
       JWT_EXPIRATION_MS: ${JWT_EXPIRATION_MS:-3600000}
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/parserdb
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER:-maf}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD is required}
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
     depends_on:
       llm-service:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      kafka:
         condition: service_healthy
     env_file:
       - .env

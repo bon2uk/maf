@@ -13,9 +13,10 @@
     <artifactId>parser-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>parser-service</name>
-    <description>Java facade over the Python llm-service. Parses free-form
-        messages into structured product attributes, with JWT-based
-        authorization, retries, and timeouts.</description>
+    <description>Java facade over the Python llm-service. Consumes raw
+        Telegram messages from Kafka, parses them via llm-service into
+        structured product attributes, and publishes the draft (or failure)
+        back through the outbox/Kafka pipeline.</description>
 
     <properties>
         <java.version>21</java.version>
@@ -39,6 +40,27 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-flyway</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-database-postgresql</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
@@ -48,21 +70,6 @@
             <artifactId>common</artifactId>
         </dependency>
 
-        <!--
-            parser-service is stateless but libs/common transitively pulls
-            in spring-boot-starter-data-jpa (needed by GlobalExceptionHandler
-            and JWT helpers that live alongside JPA entities in common).
-            Instead of excluding half of common's classpath and patching
-            holes, we ship a tiny H2 runtime so Boot can satisfy the
-            DataSource autoconfig with an in-memory database that's never
-            actually used. When libs/common is split into -web / -persistence
-            sub-modules this can be removed.
-        -->
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>runtime</scope>
-        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator-test</artifactId>

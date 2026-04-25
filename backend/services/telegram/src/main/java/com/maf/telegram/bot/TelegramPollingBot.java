@@ -2,7 +2,6 @@ package com.maf.telegram.bot;
 
 import com.maf.telegram.config.TelegramProperties;
 import com.maf.telegram.service.MessageService;
-import com.maf.telegram.service.TelegramMessageProcessingService;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
@@ -22,15 +21,12 @@ public class TelegramPollingBot implements LongPollingUpdateConsumer {
 
     private final TelegramProperties properties;
     private final MessageService messageService;
-    private final TelegramMessageProcessingService telegramMessageProcessingService;
     private TelegramBotsLongPollingApplication application;
     private BotSession botSession;
 
-    public TelegramPollingBot(TelegramProperties properties, MessageService messageService,
-                              TelegramMessageProcessingService telegramMessageProcessingService) {
+    public TelegramPollingBot(TelegramProperties properties, MessageService messageService) {
         this.properties = properties;
         this.messageService = messageService;
-        this.telegramMessageProcessingService = telegramMessageProcessingService;
     }
 
     @PostConstruct
@@ -63,39 +59,42 @@ public class TelegramPollingBot implements LongPollingUpdateConsumer {
         }
         if (update.getMessage().hasText() && update.getMessage().getText().startsWith("/")) {
             log.info("Received command: {}", update.getMessage().getText());
-        } else {
-            Message message = update.getMessage();
-            Chat chat = message.getChat();
+            return;
+        }
 
-            String chatTitle = chat.getTitle() != null ? chat.getTitle() : "Private Chat";
-            Long senderId = message.getFrom() != null ? message.getFrom().getId() : 0L;
-            String senderUsername = message.getFrom() != null && message.getFrom().getUserName() != null
-                    ? message.getFrom().getUserName() : "unknown";
-            String text = message.getText() != null ? message.getText() : "";
+        Message message = update.getMessage();
+        Chat chat = message.getChat();
 
-            log.info(
-                    "Received message: chatId={}, chatType={}, chatTitle={}, userId={}, username={}, text={}",
+        String chatTitle = chat.getTitle() != null ? chat.getTitle() : "Private Chat";
+        Long senderId = message.getFrom() != null ? message.getFrom().getId() : 0L;
+        String senderUsername = message.getFrom() != null && message.getFrom().getUserName() != null
+                ? message.getFrom().getUserName() : "unknown";
+        String text = message.getText() != null ? message.getText() : "";
+
+        log.info(
+                "Received message: chatId={}, chatType={}, chatTitle={}, userId={}, username={}, text={}",
+                chat.getId(),
+                chat.getType(),
+                chatTitle,
+                senderId,
+                senderUsername,
+                text
+        );
+
+        // Persist the raw message and emit the outbox event in one transaction.
+        // Downstream parsing is fully async over Kafka — the bot loop is
+        // intentionally lean so a slow parser can't back-pressure Telegram polling.
+        try {
+            messageService.createMessage(
+                    message.getMessageId(),
                     chat.getId(),
-                    chat.getType(),
                     chatTitle,
                     senderId,
                     senderUsername,
                     text
             );
-
-            try {
-                var messageEntity = messageService.createMessage(
-                        message.getMessageId(),
-                        chat.getId(),
-                        chatTitle,
-                        senderId,
-                        senderUsername,
-                        text
-                );
-                telegramMessageProcessingService.processMessage(messageEntity);
-            } catch (Exception e) {
-                log.error("Failed to save message: {}", e.getMessage(), e);
-            }
+        } catch (Exception e) {
+            log.error("Failed to persist message: {}", e.getMessage(), e);
         }
     }
 }

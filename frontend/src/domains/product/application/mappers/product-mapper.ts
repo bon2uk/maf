@@ -15,7 +15,7 @@ import {
 } from "../../infrastructure/dto/product-dto";
 
 export const productMapper = {
-  toDomain(dto: ProductResponse): Product {
+  toDomain(dto: ProductResponse): ProductEntity {
     return new ProductEntity(
       dto.id,
       dto.name,
@@ -26,6 +26,20 @@ export const productMapper = {
       new Date(dto.createdAt),
       new Date(dto.updatedAt)
     );
+  },
+
+  // Plain serializable shape suitable for crossing the RSC -> Client boundary.
+  toPlain(entity: ProductEntity): Product {
+    return {
+      id: entity.id,
+      name: entity.name,
+      description: entity.description,
+      price: entity.price,
+      currency: entity.currency,
+      status: entity.status,
+      createdAt: entity.createdAt,
+      updatedAt: entity.updatedAt,
+    };
   },
 
   toPaginatedDomain(dto: PaginatedProductsResponse): PaginatedProducts {

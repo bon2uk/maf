@@ -4,29 +4,35 @@ import { QueryClient, QueryClientProvider, QueryCache, MutationCache } from "@ta
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useState, type ReactNode } from "react";
 import { ApiError } from "@/shared/lib/api-client";
-import { useAuthStore } from "@/domains/auth/infrastructure/store/auth-store";
+
+let isLoggingOut = false;
+
+async function handleUnauthorized() {
+  if (isLoggingOut) return;
+  isLoggingOut = true;
+  try {
+    await fetch("/api/auth/logout", { method: "POST", credentials: "same-origin" });
+  } catch {
+    // Ignore — we'll redirect anyway.
+  }
+  if (typeof window !== "undefined") {
+    window.location.assign("/login");
+  }
+}
 
 function createQueryClient() {
   return new QueryClient({
     queryCache: new QueryCache({
       onError: (error) => {
         if (error instanceof ApiError && error.isUnauthorized()) {
-          const { isAuthenticated, clearTokens } = useAuthStore.getState();
-          if (isAuthenticated) {
-            console.warn("Unauthorized API response, clearing auth state");
-            clearTokens();
-          }
+          void handleUnauthorized();
         }
       },
     }),
     mutationCache: new MutationCache({
       onError: (error) => {
         if (error instanceof ApiError && error.isUnauthorized()) {
-          const { isAuthenticated, clearTokens } = useAuthStore.getState();
-          if (isAuthenticated) {
-            console.warn("Unauthorized mutation response, clearing auth state");
-            clearTokens();
-          }
+          void handleUnauthorized();
         }
       },
     }),

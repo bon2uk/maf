@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 
 interface PaginationProps {
   currentPage: number;
@@ -9,6 +9,7 @@ interface PaginationProps {
   onPageChange: (page: number) => void;
   total: number;
   size: number;
+  isLoading?: boolean;
 }
 
 export function Pagination({
@@ -17,6 +18,7 @@ export function Pagination({
   onPageChange,
   total,
   size,
+  isLoading = false,
 }: PaginationProps) {
   const start = currentPage * size + 1;
   const end = Math.min((currentPage + 1) * size, total);
@@ -31,19 +33,22 @@ export function Pagination({
           variant="outline"
           size="sm"
           onClick={() => onPageChange(currentPage - 1)}
-          disabled={currentPage === 0}
+          disabled={currentPage === 0 || isLoading}
         >
           <ChevronLeft className="h-4 w-4" />
           Previous
         </Button>
-        <div className="text-sm">
-          Page {currentPage + 1} of {totalPages}
+        <div className="flex items-center text-sm gap-2">
+          {isLoading && <Loader2 className="h-3 w-3 animate-spin text-muted-foreground" />}
+          <span>
+            Page {currentPage + 1} of {totalPages}
+          </span>
         </div>
         <Button
           variant="outline"
           size="sm"
           onClick={() => onPageChange(currentPage + 1)}
-          disabled={currentPage >= totalPages - 1}
+          disabled={currentPage >= totalPages - 1 || isLoading}
         >
           Next
           <ChevronRight className="h-4 w-4" />

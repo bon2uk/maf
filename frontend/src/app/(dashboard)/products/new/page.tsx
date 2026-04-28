@@ -1,5 +1,3 @@
-"use client";
-
 import { ProductForm } from "@/domains/product/presentation/components/product-form";
 import { PageHeader } from "@/shared/components/page-header";
 

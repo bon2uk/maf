@@ -1,22 +1,25 @@
-"use client";
-
 import Link from "next/link";
-import { useCurrentUser } from "@/domains/user/presentation/hooks/use-current-user";
-import { useProducts } from "@/domains/product/presentation/hooks/use-products";
+import { getCurrentUser } from "@/domains/user/infrastructure/server/user-server-api";
+import { getProducts } from "@/domains/product/infrastructure/server/product-server-api";
 import { PageHeader } from "@/shared/components/page-header";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Package, TrendingUp, Users, ShoppingCart, Plus } from "lucide-react";
 
-export default function DashboardPage() {
-  const { data: user, isLoading: userLoading } = useCurrentUser();
-  const { data: productsData, isLoading: productsLoading } = useProducts({ size: 5 });
+export default async function DashboardPage() {
+  const [user, productsData] = await Promise.all([
+    getCurrentUser(),
+    getProducts({ size: 5 }),
+  ]);
+
+  const activeCount = productsData.items.filter((p) => p.status === "ACTIVE").length;
+  const lowStockCount = 0; // Stock is not part of the current Product model.
+  const categoriesCount = 0; // Categories are not part of the current Product model.
 
   return (
     <div className="space-y-6">
       <PageHeader
-        title={userLoading ? "Welcome" : `Welcome back, ${user?.firstName || "User"}`}
+        title={`Welcome back, ${user.firstName || "User"}`}
         description="Here's an overview of your dashboard"
       />
 
@@ -27,11 +30,7 @@ export default function DashboardPage() {
             <Package className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            {productsLoading ? (
-              <Skeleton className="h-8 w-20" />
-            ) : (
-              <div className="text-2xl font-bold">{productsData?.total || 0}</div>
-            )}
+            <div className="text-2xl font-bold">{productsData.total}</div>
           </CardContent>
         </Card>
         <Card>
@@ -40,13 +39,7 @@ export default function DashboardPage() {
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            {productsLoading ? (
-              <Skeleton className="h-8 w-20" />
-            ) : (
-              <div className="text-2xl font-bold">
-                {productsData?.items.filter((p) => p.status === "ACTIVE").length || 0}
-              </div>
-            )}
+            <div className="text-2xl font-bold">{activeCount}</div>
           </CardContent>
         </Card>
         <Card>
@@ -55,13 +48,7 @@ export default function DashboardPage() {
             <ShoppingCart className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            {productsLoading ? (
-              <Skeleton className="h-8 w-20" />
-            ) : (
-              <div className="text-2xl font-bold">
-                {productsData?.items.filter((p) => p.stock < 10).length || 0}
-              </div>
-            )}
+            <div className="text-2xl font-bold">{lowStockCount}</div>
           </CardContent>
         </Card>
         <Card>
@@ -70,13 +57,7 @@ export default function DashboardPage() {
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            {productsLoading ? (
-              <Skeleton className="h-8 w-20" />
-            ) : (
-              <div className="text-2xl font-bold">
-                {new Set(productsData?.items.map((p) => p.category)).size || 0}
-              </div>
-            )}
+            <div className="text-2xl font-bold">{categoriesCount}</div>
           </CardContent>
         </Card>
       </div>
@@ -93,17 +74,11 @@ export default function DashboardPage() {
             </Button>
           </CardHeader>
           <CardContent>
-            {productsLoading ? (
-              <div className="space-y-3">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Skeleton key={i} className="h-12 w-full" />
-                ))}
-              </div>
-            ) : productsData?.items.length === 0 ? (
+            {productsData.items.length === 0 ? (
               <p className="text-muted-foreground text-sm">No products yet</p>
             ) : (
               <div className="space-y-3">
-                {productsData?.items.slice(0, 5).map((product) => (
+                {productsData.items.slice(0, 5).map((product) => (
                   <Link
                     key={product.id}
                     href={`/products/${product.id}`}
@@ -111,11 +86,11 @@ export default function DashboardPage() {
                   >
                     <div>
                       <p className="font-medium">{product.name}</p>
-                      <p className="text-sm text-muted-foreground">{product.category}</p>
+                      <p className="text-sm text-muted-foreground">{product.status}</p>
                     </div>
                     <div className="text-right">
                       <p className="font-medium">${product.price.toFixed(2)}</p>
-                      <p className="text-sm text-muted-foreground">Stock: {product.stock}</p>
+                      <p className="text-sm text-muted-foreground">{product.currency}</p>
                     </div>
                   </Link>
                 ))}

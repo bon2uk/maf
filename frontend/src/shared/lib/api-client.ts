@@ -1,4 +1,8 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080/api";
+// Same-origin path. Browser requests go to /api/<path>, which is handled by
+// Next.js Route Handlers (catch-all proxy in app/api/[...path]/route.ts and the
+// dedicated /api/auth/* handlers). The HTTP-only session cookie is sent
+// automatically; this client never touches the JWT itself.
+const API_BASE_URL = "/api";
 
 export class ApiError extends Error {
   constructor(
@@ -20,19 +24,17 @@ type RequestConfig = {
   body?: unknown;
   headers?: Record<string, string>;
   params?: Record<string, string | number | boolean | undefined>;
+  // Kept for source-compatibility with existing callers; ignored. Auth is
+  // carried by the HTTP-only `maf_session` cookie attached automatically.
   skipAuth?: boolean;
 };
-
-function getAuthToken(): string | null {
-  if (typeof window === "undefined") return null;
-  return localStorage.getItem("access_token");
-}
 
 function buildUrl(
   endpoint: string,
   params?: Record<string, string | number | boolean | undefined>
 ): string {
-  const url = new URL(`${API_BASE_URL}${endpoint}`);
+  const path = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
+  const url = new URL(`${API_BASE_URL}${path}`, "http://placeholder.local");
 
   if (params) {
     Object.entries(params).forEach(([key, value]) => {
@@ -42,7 +44,7 @@ function buildUrl(
     });
   }
 
-  return url.toString();
+  return `${url.pathname}${url.search}`;
 }
 
 async function handleResponse<T>(response: Response): Promise<T> {
@@ -59,23 +61,18 @@ async function handleResponse<T>(response: Response): Promise<T> {
 }
 
 export async function apiClient<T>(endpoint: string, config: RequestConfig = {}): Promise<T> {
-  const { method = "GET", body, headers = {}, params, skipAuth = false } = config;
+  const { method = "GET", body, headers = {}, params } = config;
 
   const requestHeaders: Record<string, string> = {
     "Content-Type": "application/json",
+    Accept: "application/json",
     ...headers,
   };
-
-  if (!skipAuth) {
-    const token = getAuthToken();
-    if (token) {
-      requestHeaders["Authorization"] = `Bearer ${token}`;
-    }
-  }
 
   const response = await fetch(buildUrl(endpoint, params), {
     method,
     headers: requestHeaders,
+    credentials: "same-origin",
     body: body ? JSON.stringify(body) : undefined,
   });
 

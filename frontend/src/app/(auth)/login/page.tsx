@@ -1,34 +1,17 @@
-"use client";
-
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { LoginForm } from "@/domains/auth/presentation/components/login-form";
-import { useAuthStore } from "@/domains/auth/infrastructure/store/auth-store";
 
-export default function LoginPage() {
-  const router = useRouter();
-  const { isAuthenticated, isHydrated } = useAuthStore();
+const SESSION_COOKIE = "maf_session";
 
-  useEffect(() => {
-    if (isHydrated && isAuthenticated) {
-      router.replace("/");
-    }
-  }, [isAuthenticated, isHydrated, router]);
+interface LoginPageProps {
+  searchParams: { next?: string };
+}
 
-  if (!isHydrated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-muted/40">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-      </div>
-    );
-  }
-
-  if (isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-muted/40">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-      </div>
-    );
+export default function LoginPage({ searchParams }: LoginPageProps) {
+  if (cookies().get(SESSION_COOKIE)?.value) {
+    const next = searchParams.next && searchParams.next.startsWith("/") ? searchParams.next : "/";
+    redirect(next);
   }
 
   return (

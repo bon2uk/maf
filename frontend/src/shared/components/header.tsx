@@ -1,7 +1,6 @@
 "use client";
 
 import { useAuth } from "@/domains/auth/presentation/hooks/use-auth";
-import { useCurrentUser } from "@/domains/user/presentation/hooks/use-current-user";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,8 +15,7 @@ import { LogOut, User } from "lucide-react";
 import Link from "next/link";
 
 export function Header() {
-  const { logout } = useAuth();
-  const { data: user } = useCurrentUser();
+  const { user, logout } = useAuth();
 
   const initials = user
     ? `${user.firstName?.[0] || ""}${user.lastName?.[0] || ""}`.toUpperCase()

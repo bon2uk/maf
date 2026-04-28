@@ -1,45 +1,31 @@
-import { api } from "@/shared/lib/api-client";
-import { LoginCredentials, AuthTokens } from "../../domain/types";
+import { LoginCredentials } from "../../domain/types";
+import { User } from "@/domains/user/domain/types";
 
 interface LoginResponse {
-  token: string;
-  refreshToken?: string;
-}
-
-interface RefreshTokenResponse {
-  token: string;
-  refreshToken?: string;
+  user: User;
 }
 
 export const authApi = {
-  login: async (credentials: LoginCredentials): Promise<AuthTokens> => {
-    const response = await api.post<LoginResponse>(
-      "/auth/login",
-      {
-        email: credentials.email,
-        password: credentials.password,
-      },
-      true
-    );
+  // Calls the same-origin Next.js Route Handler which proxies to auth-service
+  // and stores the JWT in an HTTP-only cookie. The browser never sees the token.
+  login: async (credentials: LoginCredentials): Promise<User> => {
+    const response = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      credentials: "same-origin",
+      body: JSON.stringify(credentials),
+    });
 
-    return {
-      accessToken: response.token,
-      refreshToken: response.refreshToken,
-    };
+    if (!response.ok) {
+      const data = (await response.json().catch(() => null)) as { error?: string } | null;
+      throw new Error(data?.error ?? "Login failed");
+    }
+
+    const payload = (await response.json()) as LoginResponse;
+    return payload.user;
   },
 
-  refreshToken: async (refreshToken: string): Promise<AuthTokens> => {
-    const response = await api.post<RefreshTokenResponse>(
-      "/auth/refresh",
-      {
-        refreshToken: refreshToken,
-      },
-      true
-    );
-
-    return {
-      accessToken: response.token,
-      refreshToken: response.refreshToken,
-    };
+  logout: async (): Promise<void> => {
+    await fetch("/api/auth/logout", { method: "POST", credentials: "same-origin" });
   },
 };
